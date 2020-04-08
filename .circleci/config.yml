@@ -7,14 +7,14 @@ workflows:
     jobs:
       - build
       - test-phpunit:
-        requires:
-          build
+          requires:
+            build
       - test-pharmacist:
-        requires:
-          build
+          requires:
+            build
       - test-phpstan:
-        requires:
-          build
+          requires:
+            build
 
 jobs:
   build:
