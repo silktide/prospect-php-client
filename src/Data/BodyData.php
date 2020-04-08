@@ -4,25 +4,14 @@ namespace Silktide\ProspectClient\Data;
 
 use function \GuzzleHttp\json_encode;
 
-class BodyData
+class BodyData extends AbstractData
 {
-    private array $kvp;
-
-    public function __construct()
-    {
-    }
-
-    public function set(string $key, $value): void
-    {
-        $this->kvp[$key] = $value;
-    }
-
     public function __toString(): string
     {
-        if(!isset($this->kvp)) {
+        if($this->count() === 0) {
             return "";
         }
 
-        return json_encode($this->kvp);
+        return json_encode($this);
     }
 }

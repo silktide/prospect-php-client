@@ -10,7 +10,7 @@ class BodyDataTest extends TestCase
     public function testEmpty()
     {
         $sut = new BodyData();
-        self::assertEquals("", $sut);
+        self::assertEquals("", (string)$sut);
     }
 
     public function testSingleProperty()
@@ -25,7 +25,7 @@ class BodyDataTest extends TestCase
         $sut = new BodyData();
         $sut->set($key, $value);
 
-        self::assertEquals($expectedJson, $sut);
+        self::assertEquals($expectedJson, (string)$sut);
     }
 
     public function testManyProperty()

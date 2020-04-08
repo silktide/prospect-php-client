@@ -2,9 +2,7 @@
 
 namespace Silktide\ProspectClient\Data;
 
-use ArrayObject;
-
-class QueryStringData extends ArrayObject
+class QueryStringData extends AbstractData
 {
     public function __toString(): string
     {
