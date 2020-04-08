@@ -18,5 +18,10 @@
 		"psr-4": {
 			"Silktide\\ProspectClient\\": "src"
 		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Silktide\\ProspectClient\\UnitTest\\": "test/unit"
+		}
 	}
 }

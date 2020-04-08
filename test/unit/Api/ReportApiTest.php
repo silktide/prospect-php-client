@@ -1,6 +1,6 @@
 <?php
 
-namespace Silktide\ProspectClient\UnitTest;
+namespace Silktide\ProspectClient\UnitTest\Api;
 
 use PHPUnit\Framework\TestCase;
 use Silktide\ProspectClient\Api\AbstractApi;
