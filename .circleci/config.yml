@@ -1,16 +1,18 @@
 version: 2
+
 workflows:
   version: 2
-  run_tests:
+
+  ci:
     jobs:
       - build
-      - test-phpunit
+      - test-phpunit:
         requires:
           build
-      - test-pharmacist
+      - test-pharmacist:
         requires:
           build
-      - test-phpstan
+      - test-phpstan:
         requires:
           build
 
