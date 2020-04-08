@@ -1,0 +1,81 @@
+version: 2
+workflows:
+  version: 2
+  run_tests:
+    jobs:
+      - build
+      - test-phpunit
+        requires:
+          build
+      - test-pharmacist
+        requires:
+          build
+      - test-phpstan
+        requires:
+          build
+
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.4-cli
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - composer-dev-v2-{{ checksum "composer.json" }}
+            - composer-dev-v2-
+
+      - run: composer install
+      - run: composer dump-autoload  --classmap-authoritative
+
+      - save_cache:
+          paths:
+            - ./vendor
+            - ~/.composer/cache
+          key: composer-dev-v2-{{ checksum "composer.json" }}
+
+      - persist_to_workspace:
+          root: /home/circleci/repo
+          paths:
+            - ./
+
+  test-phpunit:
+    docker:
+      - image: circleci/php:7.4-cli
+
+    steps:
+      - attach_workspace:
+          at: /home/circleci/repo
+
+      - run: mkdir test/unit/_junit
+      - run:
+          name: PHPUnit tests
+          command: if [ -f vendor/bin/phpunit ]; then vendor/bin/phpunit --log-junit test/unit/_junit/junit.xml; fi
+
+      - store_test_results:
+          path: test/unit/_junit
+
+      - store_artifacts:
+          path: test/unit/_coverage
+          destination: TestCoverage
+
+  test-pharmacist:
+    docker:
+      - image: circleci/php:7.4-cli
+
+    steps:
+      - attach_workspace:
+          at: /home/circleci/repo
+      - run: if [ -f vendor/bin/pharmacist ]; then vendor/bin/pharmacist; fi
+
+  test-phpstan:
+    docker:
+      - image: circleci/php:7.4-cli
+
+    steps:
+      - attach_workspace:
+          at: /home/circleci/repo
+      - run: if [ -f vendor/bin/phpstan ]; then php -d memory_limit=4G vendor/bin/phpstan analyse -l 0 src $(if [ -f phpstan.neon ]; then echo "-c phpstan.neon"; fi); fi
