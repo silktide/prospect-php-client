@@ -10,7 +10,6 @@ class BodyData
 
     public function __construct()
     {
-        $this->kvp = [];
     }
 
     public function set(string $key, $value): void
@@ -20,6 +19,10 @@ class BodyData
 
     public function __toString(): string
     {
+        if(!isset($this->kvp)) {
+            return "";
+        }
+
         return json_encode($this->kvp);
     }
 }
