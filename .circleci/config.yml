@@ -8,13 +8,13 @@ workflows:
       - build
       - test-phpunit:
           requires:
-            build
+            - build
       - test-pharmacist:
           requires:
-            build
+            - build
       - test-phpstan:
           requires:
-            build
+            - build
 
 jobs:
   build:
