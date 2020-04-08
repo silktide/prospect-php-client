@@ -2,16 +2,18 @@
 
 namespace Silktide\ProspectClient\UnitTest\Api;
 
-use PHPUnit\Framework\TestCase;
 use Silktide\ProspectClient\Api\AbstractApi;
 use Silktide\ProspectClient\Api\ReportApi;
-use Silktide\ProspectClient\ApiResponse\AbstractApiResponse;
+use Silktide\ProspectClient\ApiResponse\ReportApiResponse;
+use Silktide\ProspectClient\UnitTest\HttpTestCase;
 
-class ReportApiTest extends TestCase
+class ReportApiTest extends HttpTestCase
 {
+    const TEST_API_KEY = "0123456789abcdef";
+
     public function testReportIsInstanceOfAbstractApi()
     {
-        $sut = new ReportApi();
+        $sut = new ReportApi(self::TEST_API_KEY);
         self::assertInstanceOf(AbstractApi::class, $sut);
     }
 
@@ -19,9 +21,19 @@ class ReportApiTest extends TestCase
     {
         $reportId = 123;
 
-        $sut = new ReportApi();
-        $response = $sut->fetch($reportId);
+        $httpClient = self::mockHttpClient(
+            self::TEST_API_KEY,
+            "GET",
+            ReportApi::API_HOST,
+            implode("/", [
+                ReportApi::API_PATH_VERSION,
+                ReportApi::API_PATH_PREFIX,
+                $reportId
+            ]
+        ));
 
-        self::assertInstanceOf(AbstractApiResponse::class, $response);
+        $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
+        $response = $sut->fetch($reportId);
+        self::assertInstanceOf(ReportApiResponse::class, $response);
     }
 }
