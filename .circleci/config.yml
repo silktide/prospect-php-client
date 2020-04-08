@@ -52,10 +52,9 @@ jobs:
       - attach_workspace:
           at: /home/circleci/repo
 
-      - run: mkdir test/unit/_junit
       - run:
           name: PHPUnit tests
-          command: if [ -f vendor/bin/phpunit ]; then vendor/bin/phpunit --log-junit test/unit/_junit/junit.xml; fi
+          command: if [ -f vendor/bin/phpunit ]; then mkdir -p test/unit/_junit && vendor/bin/phpunit --log-junit test/unit/_junit/junit.xml; fi
 
       - store_test_results:
           path: test/unit/_junit
