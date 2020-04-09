@@ -2,7 +2,7 @@
 
 namespace Silktide\ProspectClient\Api;
 
-use DateTime;
+use Silktide\ProspectClient\Api\Fields\ReportApiFields;
 use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ReportApiResponse;
 use Silktide\ProspectClient\Data\BodyData;

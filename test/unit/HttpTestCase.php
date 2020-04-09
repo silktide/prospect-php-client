@@ -32,6 +32,8 @@ class HttpTestCase extends TestCase
             $bodyString = \GuzzleHttp\json_encode((object)$responseBodyJsonFields);
             $mockResponse->method("getBody")
                 ->willReturn($bodyString);
+            $mockResponse->method("getStatusCode")
+                ->willReturn($responseStatusCode);
         }
 
         $mockClient = self::createMock(HttpClient::class);
