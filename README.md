@@ -4,6 +4,8 @@ PHP client for integrating Prospect into your projects.
 Example usage
 -------------
 
+### Create a new report, poll for it to be completed, then display the report
+
 ```php
 use Silktide\ProspectClient\Api\ReportApi;
 use Silktide\ProspectClient\Api\ReportInProgressException;
@@ -12,7 +14,6 @@ use Silktide\ProspectClient\Api\ReportInProgressException;
 // The actual API key needs to be created at https://app.prospect.silktide.com/en_GB/admin/settings#/api
 define("PROSPECT_API_KEY", "0123456789abcdef");
 
-// Create a new report, poll for it to be completed, then display the report:
 $reportApi = new ReportApi(PROSPECT_API_KEY);
 $reportId = $reportApi->create("https://example.silktide.com");
 echo "Started report, waiting.";
@@ -37,7 +38,7 @@ foreach($report as $reportName => $reportDetail) {
 }
 ```
 
-### Example output:
+#### Example output:
 
 ```
 Started report, waiting......
@@ -56,6 +57,16 @@ Report name: organic_search
 page_link: average_monthly_traffic
 
 [ ... ]
+```
+
+### Passing API fields when creating the report
+
+```php
+$fields = new ReportApiFields();
+$fields->completionWebhook("https://example.silktide.com/report_complete.php");
+$fields->address("Silktide LTD", "", "Brunel Parkway, Pride Park", "Derby", "Derbyshire", "DE24 8HR", "GB");
+
+$reportId = $reportApi->create("https://example.silktide.com", $fields);
 ```
 
 Report
