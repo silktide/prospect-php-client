@@ -20,19 +20,25 @@ class HttpTestCase extends TestCase
         string $apiKey,
         string $method,
         string $host,
-        string $path
+        string $path,
+        array $bodyJsonFields = null
     ): HttpClient
     {
         $mockResponse = self::createMock(ResponseInterface::class);
 
+        if(!is_null($bodyJsonFields)) {
+            $bodyString = \GuzzleHttp\json_encode((object)$bodyJsonFields);
+            $mockResponse->method("getBody")
+                ->willReturn($bodyString);
+        }
+
         $mockClient = self::createMock(HttpClient::class);
-        $mockClient->expects(self::once())
-            ->method("request")
+        $mockClient->method("request")
             ->with(
                 strtoupper($method),
                 self::callback(fn(UriInterface $uri) =>
                     $uri->getHost() === $host
-                    && $uri->getPath() === $path
+                    && rtrim($uri->getPath(), "/") === rtrim($path, "/")
                 ),
                 self::callback(fn(array $array) =>
                     isset($array["headers"])

@@ -4,6 +4,7 @@ namespace Silktide\ProspectClient\UnitTest\Api;
 
 use Silktide\ProspectClient\Api\AbstractApi;
 use Silktide\ProspectClient\Api\ReportApi;
+use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ReportApiResponse;
 use Silktide\ProspectClient\UnitTest\HttpTestCase;
 
@@ -40,6 +41,7 @@ class ReportApiTest extends HttpTestCase
     public function testCreate()
     {
         $siteUrl = "https://example.silktide.com";
+        $expectedId = uniqid();
 
         $httpClient = self::mockHttpClient(
             self::TEST_API_KEY,
@@ -48,11 +50,16 @@ class ReportApiTest extends HttpTestCase
             implode("/", [
                 ReportApi::API_PATH_VERSION,
                 ReportApi::API_PATH_PREFIX
-            ])
+            ]), [
+                "status" => "running",
+                "reportId" => $expectedId,
+            ]
         );
 
         $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
-        $reportId = $sut->create($siteUrl);
-        self::assertIsString($reportId);
+        $response = $sut->create($siteUrl);
+
+        self::assertInstanceOf(CreatedReportApiResponse::class, $response);
+        self::assertEquals($expectedId, $response->getCreatedId());
     }
 }
