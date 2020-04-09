@@ -2,7 +2,9 @@
 
 namespace Silktide\ProspectClient\Api;
 
+use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ReportApiResponse;
+use Silktide\ProspectClient\Data\BodyData;
 
 class ReportApi extends AbstractApi
 {
@@ -12,5 +14,20 @@ class ReportApi extends AbstractApi
     {
         $httpResponse = $this->callApi($reportId);
         return new ReportApiResponse($httpResponse);
+    }
+
+    public function create(string $siteUrl):CreatedReportApiResponse
+    {
+        $body = new BodyData();
+        $body->set("url", $siteUrl);
+
+        $httpResponse = $this->callApi(
+            "/",
+            "POST",
+            null,
+            $body
+        );
+
+        return new CreatedReportApiResponse($httpResponse);
     }
 }

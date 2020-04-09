@@ -25,7 +25,7 @@ abstract class AbstractApi
     }
 
     protected function callApi(
-        string $path,
+        string $path = "/",
         string $method = "get",
         QueryStringData $query = null,
         BodyData $body = null
@@ -37,7 +37,7 @@ abstract class AbstractApi
                 implode("/", [
                     static::API_PATH_VERSION,
                     static::API_PATH_PREFIX,
-                    $path,
+                    ($path === "/" ? "" : $path),
                 ])
             );
 

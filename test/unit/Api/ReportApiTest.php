@@ -36,4 +36,23 @@ class ReportApiTest extends HttpTestCase
         $response = $sut->fetch($reportId);
         self::assertInstanceOf(ReportApiResponse::class, $response);
     }
+
+    public function testCreate()
+    {
+        $siteUrl = "https://example.silktide.com";
+
+        $httpClient = self::mockHttpClient(
+            self::TEST_API_KEY,
+            "POST",
+            ReportApi::API_HOST,
+            implode("/", [
+                ReportApi::API_PATH_VERSION,
+                ReportApi::API_PATH_PREFIX
+            ])
+        );
+
+        $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
+        $reportId = $sut->create($siteUrl);
+        self::assertIsString($reportId);
+    }
 }
