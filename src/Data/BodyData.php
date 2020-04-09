@@ -14,4 +14,9 @@ class BodyData extends AbstractData
 
         return json_encode($this);
     }
+
+    public function setFields(): void
+    {
+
+    }
 }

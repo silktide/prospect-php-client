@@ -22,7 +22,8 @@ class HttpTestCase extends TestCase
         string $expectedHost,
         string $expectedPath,
         array $requestBodyJsonFields = null,
-        array $responseBodyJsonFields = null
+        array $responseBodyJsonFields = null,
+        int $responseStatusCode = 200
     ): HttpClient
     {
         $mockResponse = self::createMock(ResponseInterface::class);
