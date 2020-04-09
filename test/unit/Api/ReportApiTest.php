@@ -84,6 +84,7 @@ class ReportApiTest extends HttpTestCase
                 ReportApi::API_PATH_PREFIX
             ]),
             [
+                "url" => $siteUrl,
                 "check_for_existing" => $checkBefore->format(DateTime::ISO8601),
             ],
             [
@@ -94,7 +95,6 @@ class ReportApiTest extends HttpTestCase
         );
 
         $fields = self::createMock(ReportApiFields::class);
-
 
         $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
         self::expectException(ReportAlreadyExistsException::class);
