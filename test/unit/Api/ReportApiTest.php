@@ -50,7 +50,9 @@ class ReportApiTest extends HttpTestCase
             implode("/", [
                 ReportApi::API_PATH_VERSION,
                 ReportApi::API_PATH_PREFIX
-            ]), [
+            ]),
+            null,
+            [
                 "status" => "running",
                 "reportId" => $expectedId,
             ]

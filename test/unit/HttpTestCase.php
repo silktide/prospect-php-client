@@ -17,17 +17,18 @@ class HttpTestCase extends TestCase
      * @return HttpClient|MockObject
      */
     protected function mockHttpClient(
-        string $apiKey,
-        string $method,
-        string $host,
-        string $path,
-        array $bodyJsonFields = null
+        string $expectedApiKey,
+        string $expectedMethod,
+        string $expectedHost,
+        string $expectedPath,
+        array $requestBodyJsonFields = null,
+        array $responseBodyJsonFields = null
     ): HttpClient
     {
         $mockResponse = self::createMock(ResponseInterface::class);
 
-        if(!is_null($bodyJsonFields)) {
-            $bodyString = \GuzzleHttp\json_encode((object)$bodyJsonFields);
+        if(!is_null($responseBodyJsonFields)) {
+            $bodyString = \GuzzleHttp\json_encode((object)$responseBodyJsonFields);
             $mockResponse->method("getBody")
                 ->willReturn($bodyString);
         }
@@ -35,15 +36,15 @@ class HttpTestCase extends TestCase
         $mockClient = self::createMock(HttpClient::class);
         $mockClient->method("request")
             ->with(
-                strtoupper($method),
+                strtoupper($expectedMethod),
                 self::callback(fn(UriInterface $uri) =>
-                    $uri->getHost() === $host
-                    && rtrim($uri->getPath(), "/") === rtrim($path, "/")
+                    $uri->getHost() === $expectedHost
+                    && rtrim($uri->getPath(), "/") === rtrim($expectedPath, "/")
                 ),
                 self::callback(fn(array $array) =>
                     isset($array["headers"])
                     && isset($array["headers"]["api-key"])
-                    && $array["headers"]["api-key"] === $apiKey
+                    && $array["headers"]["api-key"] === $expectedApiKey
                 )
             )
             ->willReturn($mockResponse);
