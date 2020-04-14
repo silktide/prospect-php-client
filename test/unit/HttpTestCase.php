@@ -7,6 +7,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
+use Prophecy\Exception\Prediction\PredictionException;
+use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
+use Prophecy\Prophet;
 use function GuzzleHttp\json_encode;
 
 class HttpTestCase extends TestCase
