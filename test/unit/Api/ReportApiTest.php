@@ -9,6 +9,7 @@ use Silktide\ProspectClient\Api\Fields\ReportApiFields;
 use Silktide\ProspectClient\Api\ReportApi;
 use Silktide\ProspectClient\ApiException\ReportAlreadyExistsException;
 use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\ExistingReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ReportApiResponse;
 use Silktide\ProspectClient\UnitTest\HttpTestCase;
 
@@ -66,7 +67,7 @@ class ReportApiTest extends HttpTestCase
         $response = $sut->create($siteUrl);
 
         self::assertInstanceOf(CreatedReportApiResponse::class, $response);
-        self::assertEquals($expectedId, $response->getCreatedId());
+        self::assertEquals($expectedId, $response->getReportId());
     }
 
     public function testCreateAlreadyExist()
@@ -107,5 +108,36 @@ class ReportApiTest extends HttpTestCase
         $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
         self::expectException(ReportAlreadyExistsException::class);
         $sut->create($siteUrl, $fields);
+    }
+
+    public function testReanalyze()
+    {
+        $reportId = uniqid();
+
+        $httpClient = self::mockHttpClient(
+            self::TEST_API_KEY,
+            "POST",
+          ReportApi::API_HOST,
+            implode("/", [
+                ReportApi::API_PATH_VERSION,
+                ReportApi::API_PATH_PREFIX,
+                $reportId
+            ]),
+            null,
+            [
+                "status" => "success",
+                "reportId" => $reportId,
+            ]
+        );
+
+        $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
+        $response = $sut->reanalyze($reportId);
+
+        self::assertInstanceOf(ExistingReportApiResponse::class, $response);
+
+        self::assertEquals(
+            $reportId,
+            $response->getReportId()
+        );
     }
 }

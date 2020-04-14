@@ -4,6 +4,7 @@ namespace Silktide\ProspectClient\Api;
 
 use Silktide\ProspectClient\Api\Fields\ReportApiFields;
 use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\ExistingReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ReportApiResponse;
 use Silktide\ProspectClient\Data\BodyData;
 
@@ -37,5 +38,17 @@ class ReportApi extends AbstractApi
         );
 
         return new CreatedReportApiResponse($httpResponse);
+    }
+
+    public function reanalyze(
+        $reportId
+    ):ExistingReportApiResponse
+    {
+        $httpResponse = $this->callApi(
+            $reportId,
+            "POST"
+        );
+
+        return new ExistingReportApiResponse($httpResponse);
     }
 }
