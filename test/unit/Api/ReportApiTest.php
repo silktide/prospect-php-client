@@ -140,4 +140,96 @@ class ReportApiTest extends HttpTestCase
             $response->getReportId()
         );
     }
+
+    public function testReanalyzeWithCallback()
+    {
+        $reportId = uniqid();
+        $callbackUri = "https://example.silktide.com/" . uniqid("callback-");
+
+        $requestBodyJsonFields = [
+            "onCompletion" => $callbackUri,
+        ];
+
+        $httpClient = self::mockHttpClient(
+            self::TEST_API_KEY,
+            "POST",
+            ReportApi::API_HOST,
+            implode("/", [
+                ReportApi::API_PATH_VERSION,
+                ReportApi::API_PATH_PREFIX,
+                $reportId
+            ]),
+            $requestBodyJsonFields,
+            [
+                "status" => "success",
+                "reportId" => $reportId,
+            ]
+        );
+
+        /** @var MockObject|ReportApiFields $fields */
+        $fields = self::createMockIterator(
+            ReportApiFields::class,
+            $requestBodyJsonFields
+        );
+
+        $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
+        $response = $sut->reanalyze($reportId, $fields);
+
+        self::assertInstanceOf(ExistingReportApiResponse::class, $response);
+
+        self::assertEquals(
+            $reportId,
+            $response->getReportId()
+        );
+    }
+
+    public function testReanalyzeWithCustomFields()
+    {
+        $reportId = uniqid();
+
+        $customKvp = [
+            uniqid("key-") => uniqid("value-"),
+            uniqid("key-") => uniqid("value-"),
+            uniqid("key-") => uniqid("value-"),
+            uniqid("key-") => uniqid("value-"),
+            uniqid("key-") => uniqid("value-"),
+        ];
+
+        $requestBodyJsonFields = [];
+        foreach($customKvp as $key => $value) {
+            $requestBodyJsonFields["_" . $key] = $value;
+        }
+
+        $httpClient = self::mockHttpClient(
+            self::TEST_API_KEY,
+            "POST",
+            ReportApi::API_HOST,
+            implode("/", [
+                ReportApi::API_PATH_VERSION,
+                ReportApi::API_PATH_PREFIX,
+                $reportId
+            ]),
+            $requestBodyJsonFields,
+            [
+                "status" => "success",
+                "reportId" => $reportId,
+            ]
+        );
+
+        /** @var MockObject|ReportApiFields $fields */
+        $fields = self::createMockIterator(
+            ReportApiFields::class,
+            $requestBodyJsonFields
+        );
+
+        $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
+        $response = $sut->reanalyze($reportId, $fields);
+
+        self::assertInstanceOf(ExistingReportApiResponse::class, $response);
+
+        self::assertEquals(
+            $reportId,
+            $response->getReportId()
+        );
+    }
 }

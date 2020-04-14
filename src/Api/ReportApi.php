@@ -41,12 +41,22 @@ class ReportApi extends AbstractApi
     }
 
     public function reanalyze(
-        $reportId
+        $reportId,
+        ReportApiFields $fields = null
     ):ExistingReportApiResponse
     {
+        $body = null;
+
+        if($fields) {
+            $body = new BodyData();
+            $body->setFields($fields);
+        }
+
         $httpResponse = $this->callApi(
             $reportId,
-            "POST"
+            "POST",
+            null,
+            $body
         );
 
         return new ExistingReportApiResponse($httpResponse);
