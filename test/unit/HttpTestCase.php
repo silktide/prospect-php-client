@@ -25,16 +25,15 @@ class HttpTestCase extends TestCase
         array $requestBodyJsonFields = null,
         array $responseBodyJsonFields = null,
         int $responseStatusCode = 200
-    ): HttpClient
-    {
+    ): HttpClient {
         $expectedBody = null;
-        if($requestBodyJsonFields) {
+        if ($requestBodyJsonFields) {
             $expectedBody = json_encode($requestBodyJsonFields);
         }
 
         $mockResponse = self::createMock(ResponseInterface::class);
 
-        if(!is_null($responseBodyJsonFields)) {
+        if (!is_null($responseBodyJsonFields)) {
             $bodyString = json_encode((object)$responseBodyJsonFields);
             $mockResponse->method("getBody")
                 ->willReturn($bodyString);
@@ -48,26 +47,73 @@ class HttpTestCase extends TestCase
 // 0. First parameter is the upper case request method.
                 strtoupper($expectedMethod),
 // 1. Second parameter is a UriInterface with expected host and path.
-                self::callback(fn(UriInterface $uri) =>
-                    $uri->getHost() === $expectedHost
-                    && rtrim($uri->getPath(), "/") === rtrim($expectedPath, "/")
+                self::callback(
+                    fn(UriInterface $uri) => $uri->getHost() === $expectedHost
+                        && rtrim($uri->getPath(), "/") === rtrim($expectedPath, "/")
                 ),
 // 2. Third parameter is the options array. It must have the API key, but has an optional body.
-                self::callback(fn(array $array) =>
-                    (
-                        isset($array["headers"])
-                        && isset($array["headers"]["api-key"])
-                        && $array["headers"]["api-key"] === $expectedApiKey
-                    ) && (
-                        empty($expectedBody) || (
-                            isset($array["body"])
-                            && $array["body"] == $expectedBody
+                self::callback(
+                    fn(array $array) => (
+                            isset($array["headers"])
+                            && isset($array["headers"]["api-key"])
+                            && $array["headers"]["api-key"] === $expectedApiKey
+                        ) && (
+                            empty($expectedBody) || (
+                                isset($array["body"])
+                                && $array["body"] == $expectedBody
+                            )
                         )
-                    )
                 )
             )
             ->willReturn($mockResponse);
 
         return $mockClient;
+    }
+
+    /**
+     * Returns a mock iterator for the specified class.
+     *
+     * @param string|string[] $originalClassName
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     * @psalm-return MockObject&RealInstanceType
+     */
+    protected function createMockIterator($originalClassName, array $data): MockObject
+    {
+        $mock = $this->createMock($originalClassName);
+        $counter = 0;
+
+        $mock
+            ->expects($this->at($counter))
+            ->method('rewind');
+
+        foreach ($data as $key => $value) {
+            $mock
+                ->expects($this->at(++$counter))
+                ->method("valid")
+                ->will($this->returnValue(true));
+
+            $mock
+                ->expects($this->at(++$counter))
+                ->method("current")
+                ->will($this->returnValue($value));
+
+            $mock
+                ->expects($this->at(++$counter))
+                ->method("key")
+                ->will($this->returnValue($key));
+
+            $mock
+                ->expects($this->at(++$counter))
+                ->method("next");
+        }
+
+        $mock
+            ->expects($this->at(++$counter))
+            ->method("valid")
+            ->will($this->returnValue(false));
+
+        return $mock;
     }
 }

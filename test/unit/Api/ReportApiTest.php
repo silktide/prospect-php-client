@@ -3,6 +3,7 @@
 namespace Silktide\ProspectClient\UnitTest\Api;
 
 use DateTime;
+use PHPUnit\Framework\MockObject\MockObject;
 use Silktide\ProspectClient\Api\AbstractApi;
 use Silktide\ProspectClient\Api\Fields\ReportApiFields;
 use Silktide\ProspectClient\Api\ReportApi;
@@ -70,10 +71,19 @@ class ReportApiTest extends HttpTestCase
 
     public function testCreateAlreadyExist()
     {
-        $checkBefore = new DateTime("-1 week");
-
         $siteUrl = "https://example.silktide.com";
         $expectedId = uniqid();
+        $checkBefore = new DateTime("-1 week");
+
+        $requestBodyJsonFields = [
+            "url" => $siteUrl,
+            "check_for_existing" => $checkBefore->format(DateTime::ISO8601),
+        ];
+
+        $responseBodyJsonFields = [
+            "status" => "running",
+            "reportId" => $expectedId,
+        ];
 
         $httpClient = self::mockHttpClient(
             self::TEST_API_KEY,
@@ -83,18 +93,16 @@ class ReportApiTest extends HttpTestCase
                 ReportApi::API_PATH_VERSION,
                 ReportApi::API_PATH_PREFIX
             ]),
-            [
-                "url" => $siteUrl,
-                "check_for_existing" => $checkBefore->format(DateTime::ISO8601),
-            ],
-            [
-                "status" => "running",
-                "reportId" => $expectedId,
-            ],
+            $requestBodyJsonFields,
+            $responseBodyJsonFields,
             303
         );
 
-        $fields = self::createMock(ReportApiFields::class);
+        /** @var MockObject|ReportApiFields $fields */
+        $fields = self::createMockIterator(
+            ReportApiFields::class,
+            $requestBodyJsonFields
+        );
 
         $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
         self::expectException(ReportAlreadyExistsException::class);
