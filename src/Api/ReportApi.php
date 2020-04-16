@@ -3,18 +3,24 @@
 namespace Silktide\ProspectClient\Api;
 
 use Silktide\ProspectClient\Api\Fields\ReportApiFields;
+use Silktide\ProspectClient\Api\Filter\ReportApiFilter;
 use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ExistingReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\ListReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ReportApiResponse;
 use Silktide\ProspectClient\Data\BodyData;
 
 class ReportApi extends AbstractApi
 {
-    const API_PATH_PREFIX = "report";
+    const API_PATH_PREFIX_SINGLE_REPORT = "report";
+    const API_PATH_PREFIX_LIST_REPORTS = "reports";
 
     public function fetch(int $reportId):ReportApiResponse
     {
-        $httpResponse = $this->callApi($reportId);
+        $httpResponse = $this->callApi(implode("/", [
+            self::API_PATH_PREFIX_SINGLE_REPORT,
+            $reportId,
+       ]));
         return new ReportApiResponse($httpResponse);
     }
 
@@ -31,7 +37,7 @@ class ReportApi extends AbstractApi
         }
 
         $httpResponse = $this->callApi(
-            "/",
+            self::API_PATH_PREFIX_SINGLE_REPORT,
             "POST",
             null,
             $body
@@ -53,12 +59,33 @@ class ReportApi extends AbstractApi
         }
 
         $httpResponse = $this->callApi(
-            $reportId,
+            implode("/", [
+                self::API_PATH_PREFIX_SINGLE_REPORT,
+                $reportId,
+            ]),
             "POST",
             null,
             $body
         );
 
         return new ExistingReportApiResponse($httpResponse);
+    }
+
+    public function search(
+        ReportApiFilter $filter = null
+    ):ListReportApiResponse
+    {
+        $queryStringData = null;
+        if($filter) {
+            $queryStringData = $filter->asQueryStringData();
+        }
+
+        $httpResponse = $this->callApi(
+            self::API_PATH_PREFIX_LIST_REPORTS,
+            "GET",
+            $queryStringData
+        );
+
+        return new ListReportApiResponse($httpResponse);
     }
 }

@@ -13,7 +13,6 @@ abstract class AbstractApi
     const API_SCHEME = "https";
     const API_HOST = "api.prospect.silktide.com";
     const API_PATH_VERSION = "/api/v1";
-    const API_PATH_PREFIX = "";
 
     private string $apiKey;
     private HttpClient $httpClient;
@@ -36,13 +35,12 @@ abstract class AbstractApi
             ->withPath(
                 implode("/", [
                     static::API_PATH_VERSION,
-                    static::API_PATH_PREFIX,
                     ($path === "/" ? "" : $path),
                 ])
             );
 
         if($query) {
-            $uri = $uri->withQuery($query);
+            $uri = $uri->withQuery((string)$query);
         }
 
         $options = [
