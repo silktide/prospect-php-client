@@ -9,6 +9,8 @@ use Silktide\ProspectClient\Api\Fields\ReportApiFields;
 use Silktide\ProspectClient\Api\Filter\ReportApiFilter;
 use Silktide\ProspectClient\Api\ReportApi;
 use Silktide\ProspectClient\ApiException\ReportAlreadyExistsException;
+use Silktide\ProspectClient\ApiException\ReportNotFoundException;
+use Silktide\ProspectClient\ApiException\ReportStillRunningException;
 use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ExistingReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ListReportApiResponse;
@@ -28,7 +30,7 @@ class ReportApiTest extends HttpTestCase
 
     public function testFetch()
     {
-        $reportId = 123;
+        $reportId = uniqid();
 
         $httpClient = self::mockHttpClient(
             self::TEST_API_KEY,
@@ -47,6 +49,58 @@ class ReportApiTest extends HttpTestCase
         $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
         $response = $sut->fetch($reportId);
         self::assertInstanceOf(ReportApiResponse::class, $response);
+    }
+
+    public function testFetchStillRunning()
+    {
+        $reportId = uniqid();
+        $httpClient = self::mockHttpClient(
+            self::TEST_API_KEY,
+            "GET",
+            ReportApi::API_HOST,
+            implode(
+                "/",
+                [
+                    ReportApi::API_PATH_VERSION,
+                    ReportApi::API_PATH_PREFIX_SINGLE_REPORT,
+                    $reportId
+                ]
+            ),
+            null,
+            null,
+            202
+        );
+
+        $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
+
+        self::expectException(ReportStillRunningException::class);
+        $sut->fetch($reportId);
+    }
+
+    public function testFetchNotFound()
+    {
+        $reportId = uniqid();
+        $httpClient = self::mockHttpClient(
+            self::TEST_API_KEY,
+            "GET",
+            ReportApi::API_HOST,
+            implode(
+                "/",
+                [
+                    ReportApi::API_PATH_VERSION,
+                    ReportApi::API_PATH_PREFIX_SINGLE_REPORT,
+                    $reportId
+                ]
+            ),
+            null,
+            null,
+            404
+        );
+
+        $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
+
+        self::expectException(ReportNotFoundException::class);
+        $sut->fetch($reportId);
     }
 
     public function testCreate()

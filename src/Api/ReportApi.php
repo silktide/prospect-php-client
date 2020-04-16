@@ -4,6 +4,8 @@ namespace Silktide\ProspectClient\Api;
 
 use Silktide\ProspectClient\Api\Fields\ReportApiFields;
 use Silktide\ProspectClient\Api\Filter\ReportApiFilter;
+use Silktide\ProspectClient\ApiException\ReportNotFoundException;
+use Silktide\ProspectClient\ApiException\ReportStillRunningException;
 use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ExistingReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ListReportApiResponse;
@@ -15,12 +17,23 @@ class ReportApi extends AbstractApi
     const API_PATH_PREFIX_SINGLE_REPORT = "report";
     const API_PATH_PREFIX_LIST_REPORTS = "reports";
 
-    public function fetch(int $reportId):ReportApiResponse
+    public function fetch(string $reportId):ReportApiResponse
     {
         $httpResponse = $this->callApi(implode("/", [
             self::API_PATH_PREFIX_SINGLE_REPORT,
             $reportId,
-       ]));
+        ]));
+
+        switch($httpResponse->getStatusCode()) {
+            case 202:
+                throw new ReportStillRunningException($reportId);
+                break;
+
+            case 404:
+                throw new ReportNotFoundException($reportId);
+                break;
+        }
+
         return new ReportApiResponse($httpResponse);
     }
 

@@ -41,9 +41,10 @@ class HttpTestCase extends TestCase
             $bodyString = json_encode((object)$responseBodyJsonFields);
             $mockResponse->method("getBody")
                 ->willReturn($bodyString);
-            $mockResponse->method("getStatusCode")
-                ->willReturn($responseStatusCode);
         }
+
+        $mockResponse->method("getStatusCode")
+            ->willReturn($responseStatusCode);
 
         $mockClient = self::createMock(HttpClient::class);
         $mockClient->method("request")
