@@ -10,7 +10,9 @@ use Silktide\ProspectClient\Api\Filter\ReportApiFilter;
 use Silktide\ProspectClient\Api\ReportApi;
 use Silktide\ProspectClient\ApiException\ReportAlreadyExistsException;
 use Silktide\ProspectClient\ApiException\ReportNotFoundException;
+use Silktide\ProspectClient\ApiException\ReportPathDoesNotExistException;
 use Silktide\ProspectClient\ApiException\ReportStillRunningException;
+use Silktide\ProspectClient\ApiException\ReportPathUnprocessableException;
 use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ExistingReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ListReportApiResponse;
@@ -123,7 +125,8 @@ class ReportApiTest extends HttpTestCase
             [
                 "status" => "running",
                 "reportId" => $expectedId,
-            ]
+            ],
+            202
         );
 
         $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
@@ -173,6 +176,76 @@ class ReportApiTest extends HttpTestCase
 
         $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
         self::expectException(ReportAlreadyExistsException::class);
+        $sut->create($siteUrl, $fields);
+    }
+
+    public function testCreatePathUnprocessable()
+    {
+        $siteUrl = "ftp://why-ftp.silktide.com";
+
+        $requestBodyJsonFields = [
+            "url" => $siteUrl,
+        ];
+
+        $httpClient = self::mockHttpClient(
+            self::TEST_API_KEY,
+            "POST",
+            ReportApi::API_HOST,
+            implode(
+                "/",
+                [
+                    ReportApi::API_PATH_VERSION,
+                    ReportApi::API_PATH_PREFIX_SINGLE_REPORT
+                ]
+            ),
+            $requestBodyJsonFields,
+            null,
+            400
+        );
+
+        /** @var MockObject|ReportApiFields $fields */
+        $fields = self::createMockIterator(
+            ReportApiFields::class,
+            $requestBodyJsonFields
+        );
+
+        $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
+        self::expectException(ReportPathUnprocessableException::class);
+        $sut->create($siteUrl, $fields);
+    }
+
+    public function testCreatePathDoesNotExist()
+    {
+        $siteUrl = "https://this.does.not.exist.silktide.com";
+
+        $requestBodyJsonFields = [
+            "url" => $siteUrl,
+        ];
+
+        $httpClient = self::mockHttpClient(
+            self::TEST_API_KEY,
+            "POST",
+            ReportApi::API_HOST,
+            implode(
+                "/",
+                [
+                    ReportApi::API_PATH_VERSION,
+                    ReportApi::API_PATH_PREFIX_SINGLE_REPORT
+                ]
+            ),
+            $requestBodyJsonFields,
+            null,
+            422
+        );
+
+        /** @var MockObject|ReportApiFields $fields */
+        $fields = self::createMockIterator(
+            ReportApiFields::class,
+            $requestBodyJsonFields
+        );
+
+        $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
+        self::expectException(ReportPathDoesNotExistException::class);
         $sut->create($siteUrl, $fields);
     }
 

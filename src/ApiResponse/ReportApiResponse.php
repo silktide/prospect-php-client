@@ -4,6 +4,9 @@ namespace Silktide\ProspectClient\ApiResponse;
 
 use Psr\Http\Message\ResponseInterface;
 use Silktide\ProspectClient\ApiException\ReportAlreadyExistsException;
+use Silktide\ProspectClient\ApiException\ReportNotFoundException;
+use Silktide\ProspectClient\ApiException\ReportPathDoesNotExistException;
+use Silktide\ProspectClient\ApiException\ReportPathUnprocessableException;
 
 class ReportApiResponse extends AbstractApiJsonResponse
 {
@@ -15,9 +18,15 @@ class ReportApiResponse extends AbstractApiJsonResponse
                 break;
 
             case 400:
+                throw new ReportPathUnprocessableException();
+                break;
+
+            case 404:
+                throw new ReportNotFoundException();
                 break;
 
             case 422:
+                throw new ReportPathDoesNotExistException();
                 break;
         }
         parent::__construct($httpResponse);

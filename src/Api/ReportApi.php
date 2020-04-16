@@ -28,10 +28,6 @@ class ReportApi extends AbstractApi
             case 202:
                 throw new ReportStillRunningException($reportId);
                 break;
-
-            case 404:
-                throw new ReportNotFoundException($reportId);
-                break;
         }
 
         return new ReportApiResponse($httpResponse);
