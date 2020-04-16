@@ -15,19 +15,15 @@ class ReportApiResponse extends AbstractApiJsonResponse
         switch($httpResponse->getStatusCode()) {
             case 303:
                 throw new ReportAlreadyExistsException();
-                break;
 
             case 400:
                 throw new ReportPathUnprocessableException();
-                break;
 
             case 404:
                 throw new ReportNotFoundException();
-                break;
 
             case 422:
                 throw new ReportPathDoesNotExistException();
-                break;
         }
         parent::__construct($httpResponse);
     }

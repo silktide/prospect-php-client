@@ -8,6 +8,7 @@ use Silktide\ProspectClient\ApiException\ReportNotFoundException;
 use Silktide\ProspectClient\ApiException\ReportStillRunningException;
 use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ExistingReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\FetchedReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ListReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ReportApiResponse;
 use Silktide\ProspectClient\Data\BodyData;
@@ -17,7 +18,7 @@ class ReportApi extends AbstractApi
     const API_PATH_PREFIX_SINGLE_REPORT = "report";
     const API_PATH_PREFIX_LIST_REPORTS = "reports";
 
-    public function fetch(string $reportId):ReportApiResponse
+    public function fetch(string $reportId): FetchedReportApiResponse
     {
         $httpResponse = $this->callApi(implode("/", [
             self::API_PATH_PREFIX_SINGLE_REPORT,
@@ -30,7 +31,7 @@ class ReportApi extends AbstractApi
                 break;
         }
 
-        return new ReportApiResponse($httpResponse);
+        return new FetchedReportApiResponse($httpResponse);
     }
 
     public function create(
