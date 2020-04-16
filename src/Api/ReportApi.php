@@ -28,7 +28,6 @@ class ReportApi extends AbstractApi
         switch($httpResponse->getStatusCode()) {
             case 202:
                 throw new ReportStillRunningException($reportId);
-                break;
         }
 
         return new FetchedReportApiResponse($httpResponse);

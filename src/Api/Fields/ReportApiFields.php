@@ -88,7 +88,7 @@ class ReportApiFields extends AbstractApiFields
     /** Latitude and longitude, enhances accuracy in some checks, e.g Local presence, Reviews. */
     public function latLng(float $lat, float $lon): void {
         $this->keyValuePairs["lat"] = $lat;
-        $this->keyValuePairs["lon"] = $lon;
+        $this->keyValuePairs["lng"] = $lon;
     }
 
     /**

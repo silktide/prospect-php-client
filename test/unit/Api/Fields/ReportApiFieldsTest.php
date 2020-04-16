@@ -147,4 +147,51 @@ class ReportApiFieldsTest extends TestCase
 
         self::assertEquals(count($expectedAddress), $i);
     }
+
+    public function testLatLng()
+    {
+        $lat = (rand() * 360) - 180;
+        $lng = (rand() * 360) - 180;
+
+        $sut = new ReportApiFields();
+        $sut->latLng($lat, $lng);
+
+        self::assertEquals("lat", $sut->key());
+        self::assertEquals($lat, $sut->current());
+        $sut->next();
+        self::assertEquals("lng", $sut->key());
+        self::assertEquals($lng, $sut->current());
+    }
+
+    public function testProducts()
+    {
+        $product1 = uniqid("product-");
+        $product2 = uniqid("product-");
+        $product3 = uniqid("product-");
+
+        $sut = new ReportApiFields();
+        $sut->products($product1, $product2, $product3);
+
+        self::assertEquals("products", $sut->key());
+        self::assertEquals(
+            implode(",", [$product1, $product2, $product3]),
+            $sut->current()
+        );
+    }
+
+    public function testLocations()
+    {
+        $location1 = uniqid("location-");
+        $location2 = uniqid("location-");
+        $location3 = uniqid("location-");
+
+        $sut = new ReportApiFields();
+        $sut->locations($location1, $location2, $location3);
+
+        self::assertEquals("locations", $sut->key());
+        self::assertEquals(
+            implode(",", [$location1, $location2, $location3]),
+            $sut->current()
+        );
+    }
 }
