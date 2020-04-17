@@ -18,10 +18,10 @@ workflows:
 
 jobs:
   build:
+    working_directory: /opt/repo
+
     docker:
       - image: circleci/php:7.4-cli
-
-    working_directory: ~/repo
 
     steps:
       - checkout
@@ -45,6 +45,7 @@ jobs:
             - ./
 
   test-phpunit:
+    working_directory: /opt/repo
     docker:
       - image: circleci/php:7.4-cli
 
@@ -64,15 +65,18 @@ jobs:
           destination: TestCoverage
 
   test-pharmacist:
+    working_directory: /opt/repo
+
     docker:
       - image: circleci/php:7.4-cli
 
     steps:
       - attach_workspace:
-          at: /home/circleci/repo
+          at: /opt/repo
       - run: if [ -f vendor/bin/pharmacist ]; then vendor/bin/pharmacist; fi
 
   test-phpstan:
+    working_directory: /opt/repo
     docker:
       - image: circleci/php:7.4-cli
 
