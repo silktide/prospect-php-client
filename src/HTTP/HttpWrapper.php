@@ -54,7 +54,7 @@ class HttpWrapper
         ];
 
         if($body !== null && count($body) > 0) {
-            $options["body"] = json_encode($this);;
+            $options["body"] = json_encode($body);;
         }
 
         return $this->client->request(
