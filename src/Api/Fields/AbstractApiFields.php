@@ -6,8 +6,8 @@ use Iterator;
 
 abstract class AbstractApiFields implements Iterator
 {
-    protected array $keyValuePairs = [];
-    private int $iteratorKey = 0;
+    protected $keyValuePairs = [];
+    private $iteratorKey = 0;
 
     public function rewind(): void
     {

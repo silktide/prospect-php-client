@@ -6,7 +6,7 @@ use Silktide\ProspectClient\Data\QueryStringData;
 
 class ReportApiFilter
 {
-    private array $parameters;
+    private $parameters;
 
     public function __construct()
     {

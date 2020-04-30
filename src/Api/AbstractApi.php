@@ -14,8 +14,8 @@ abstract class AbstractApi
     const API_HOST = "api.prospect.silktide.com";
     const API_PATH_VERSION = "/api/v1";
 
-    private string $apiKey;
-    private HttpClient $httpClient;
+    private $apiKey;
+    private $httpClient;
 
     public function __construct(string $apiKey, HttpClient $httpClient = null)
     {
