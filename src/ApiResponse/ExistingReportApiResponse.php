@@ -2,4 +2,4 @@
 
 namespace Silktide\ProspectClient\ApiResponse;
 
-class ExistingReportApiResponse extends FetchedReportApiResponse {}
+class ExistingReportApiResponse extends FetchReportApiResponse {}

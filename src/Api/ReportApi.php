@@ -6,95 +6,40 @@ use Silktide\ProspectClient\Api\Fields\ReportApiFields;
 use Silktide\ProspectClient\Api\Filter\ReportApiFilter;
 use Silktide\ProspectClient\ApiException\ReportNotFoundException;
 use Silktide\ProspectClient\ApiException\ReportStillRunningException;
-use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
+use Silktide\ProspectClient\ApiRequest\CreateReportApiRequest;
+use Silktide\ProspectClient\ApiRequest\FetchReportApiRequest;
+use Silktide\ProspectClient\ApiRequest\ReanalyzeReportApiRequest;
+use Silktide\ProspectClient\ApiRequest\SearchReportApiRequest;
+use Silktide\ProspectClient\ApiResponse\CreateReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ExistingReportApiResponse;
-use Silktide\ProspectClient\ApiResponse\FetchedReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\FetchReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ListReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ReportApiResponse;
 use Silktide\ProspectClient\Data\BodyData;
+use Silktide\ProspectClient\Entity\Report;
 
 class ReportApi extends AbstractApi
 {
-    const API_PATH_PREFIX_SINGLE_REPORT = "report";
-    const API_PATH_PREFIX_LIST_REPORTS = "reports";
-
-    public function fetch(string $reportId): FetchedReportApiResponse
+    public function create():CreateReportApiRequest
     {
-        $httpResponse = $this->callApi(implode("/", [
-            self::API_PATH_PREFIX_SINGLE_REPORT,
-            $reportId,
-        ]));
-
-        switch($httpResponse->getStatusCode()) {
-            case 202:
-                throw new ReportStillRunningException($reportId);
-        }
-
-        return new FetchedReportApiResponse($httpResponse);
+        return new CreateReportApiRequest($this->httpWrapper);
     }
 
-    public function create(
-        string $siteUrl,
-        ReportApiFields $fields = null
-    ):CreatedReportApiResponse
+    public function reanalyze():ReanalyzeReportApiRequest
     {
-        $body = new BodyData();
-        $body->set("url", $siteUrl);
-
-        if($fields) {
-            $body->setFields($fields);
-        }
-
-        $httpResponse = $this->callApi(
-            self::API_PATH_PREFIX_SINGLE_REPORT,
-            "POST",
-            null,
-            $body
-        );
-
-        return new CreatedReportApiResponse($httpResponse);
+        return new ReanalyzeReportApiRequest($this->httpWrapper);
     }
 
-    public function reanalyze(
-        $reportId,
-        ReportApiFields $fields = null
-    ):ExistingReportApiResponse
+    public function search():SearchReportApiRequest
     {
-        $body = null;
-
-        if($fields) {
-            $body = new BodyData();
-            $body->setFields($fields);
-        }
-
-        $httpResponse = $this->callApi(
-            implode("/", [
-                self::API_PATH_PREFIX_SINGLE_REPORT,
-                $reportId,
-            ]),
-            "POST",
-            null,
-            $body
-        );
-
-        return new ExistingReportApiResponse($httpResponse);
+        return new SearchReportApiRequest($this->httpWrapper);
     }
 
-    public function search(
-        ReportApiFilter $filter = null
-    ):ListReportApiResponse
+    public function fetch(string $reportId): Report
     {
-        $queryStringData = null;
-        if($filter) {
-            $queryStringData = $filter->asQueryStringData();
-        }
-
-        $httpResponse = $this->callApi(
-            self::API_PATH_PREFIX_LIST_REPORTS,
-            "GET",
-            $queryStringData
-        );
-
-        return new ListReportApiResponse($httpResponse);
+        $request = new FetchReportApiRequest($this->httpWrapper);
+        $request->setId($reportId);
+        $response = $request->execute();
+        return $response->getReport();
     }
 }

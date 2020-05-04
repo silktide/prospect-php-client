@@ -4,10 +4,10 @@ namespace Silktide\ProspectClient\ApiResponse;
 
 use Silktide\ProspectClient\Entity\Report;
 
-class FetchedReportApiResponse extends ReportApiResponse
+class FetchReportApiResponse extends ReportApiResponse
 {
     public function getReport():Report
     {
-        return new Report($this->jsonResponse->{"report"});
+        return new Report($this->jsonResponse["report"]);
     }
 }

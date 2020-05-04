@@ -19,7 +19,7 @@ class AbstractApiJsonResponse extends AbstractApiResponse
             $this->jsonResponse = null;
         }
         else {
-            $this->jsonResponse = json_decode($body);
+            $this->jsonResponse = json_decode($body, true);
         }
     }
 }
