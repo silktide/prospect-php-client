@@ -4,7 +4,7 @@ namespace Silktide\ProspectClient\UnitTest\ApiResponse;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
-use Silktide\ProspectClient\ApiResponse\FetchedReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\FetchReportApiResponse;
 use Silktide\ProspectClient\Entity\Report;
 
 class FetchedReportApiResponseTest extends TestCase
@@ -19,7 +19,7 @@ class FetchedReportApiResponseTest extends TestCase
                 "report" => "nothing",
             ]));
 
-        $sut = new FetchedReportApiResponse($httpResponse);
+        $sut = new FetchReportApiResponse($httpResponse);
         self::assertInstanceOf(Report::class, $sut->getReport());
     }
 }

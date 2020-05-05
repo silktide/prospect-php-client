@@ -4,7 +4,7 @@ namespace Silktide\ProspectClient\UnitTest\ApiResponse;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
-use Silktide\ProspectClient\ApiResponse\FetchedReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\FetchReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ListReportApiResponse;
 use Silktide\ProspectClient\Entity\Report;
 

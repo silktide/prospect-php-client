@@ -54,7 +54,7 @@ class HttpWrapper
 
         return $this->guzzle->request(
             $method,
-            $uri,
+            trim($uri, "/"),
             $options
         );
     }

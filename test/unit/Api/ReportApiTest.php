@@ -13,7 +13,7 @@ use Silktide\ProspectClient\ApiException\ReportNotFoundException;
 use Silktide\ProspectClient\ApiException\ReportPathDoesNotExistException;
 use Silktide\ProspectClient\ApiException\ReportStillRunningException;
 use Silktide\ProspectClient\ApiException\ReportPathUnprocessableException;
-use Silktide\ProspectClient\ApiResponse\CreatedReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\CreateReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ExistingReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ListReportApiResponse;
 use Silktide\ProspectClient\ApiResponse\ReportApiResponse;
@@ -132,7 +132,7 @@ class ReportApiTest extends HttpTestCase
         $sut = new ReportApi(self::TEST_API_KEY, $httpClient);
         $response = $sut->create($siteUrl);
 
-        self::assertInstanceOf(CreatedReportApiResponse::class, $response);
+        self::assertInstanceOf(CreateReportApiResponse::class, $response);
         self::assertEquals($expectedId, $response->getReportId());
     }
 
