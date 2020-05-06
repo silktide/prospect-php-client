@@ -12,7 +12,7 @@ class ReportApiResponse extends AbstractApiJsonResponse
 {
     public function __construct(ResponseInterface $httpResponse)
     {
-        switch($httpResponse->getStatusCode()) {
+        switch ($httpResponse->getStatusCode()) {
             case 303:
                 throw new ReportAlreadyExistsException();
 
@@ -28,7 +28,8 @@ class ReportApiResponse extends AbstractApiJsonResponse
         parent::__construct($httpResponse);
     }
 
-    public function getReportId(): string {
+    public function getReportId(): string
+    {
         return $this->jsonResponse["reportId"];
     }
 }

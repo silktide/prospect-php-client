@@ -11,7 +11,7 @@ abstract class AbstractApiRequest
     protected array $query;
     protected array $body;
 
-    protected string $apiPath = "/";
+    protected string $apiPath = "";
     protected string $apiPathSuffix = "";
     protected string $apiMethod = "get";
 
@@ -22,13 +22,13 @@ abstract class AbstractApiRequest
         $this->body = [];
     }
 
-    abstract public function execute():AbstractApiResponse;
+    abstract public function execute(): AbstractApiResponse;
 
-    protected function makeHttpRequest():ResponseInterface
+    protected function makeHttpRequest(): ResponseInterface
     {
         return $this->httpWrapper->makeRequest(
-            implode("/", [ $this->apiPath, $this->apiPathSuffix ]),
-            $this->apiMethod,
+            implode("/", [$this->apiPath, $this->apiPathSuffix]),
+            strtoupper($this->apiMethod),
             $this->getQueryParameters(),
             $this->getBodyParameters()
         );
@@ -36,7 +36,7 @@ abstract class AbstractApiRequest
 
     private function getQueryParameters(): ?array
     {
-        if(empty($this->query)) {
+        if (empty($this->query)) {
             return null;
         }
 
@@ -45,7 +45,7 @@ abstract class AbstractApiRequest
 
     private function getBodyParameters(): ?array
     {
-        if(empty($this->body)) {
+        if (empty($this->body)) {
             return null;
         }
 

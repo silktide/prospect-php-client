@@ -35,32 +35,34 @@ class SearchReportApiRequest extends AbstractApiRequest
     protected string $apiPath = "reports";
     protected string $apiMethod = "get";
 
-    private array $filters = [];
+    private array $filter = [];
     private array $orderBy = [];
 
     public function execute(): SearchReportApiResponse
     {
-        $json = [];
-
-        if(!empty($this->orderBy)) {
-            $json["order"] = $this->orderBy;
+        if (!empty($this->orderBy)) {
+            $this->query["order"] = $this->orderBy;
         }
+        if (!empty($this->filter)) {
+            $this->query["filter"] = $this->filter;
+        }
+
         $httpResponse = $this->makeHttpRequest();
         return new SearchReportApiResponse($httpResponse);
     }
 
-    public function addFilter(string $property, string $operator, string $value):self
+    public function addFilter(string $property, string $operator, string $value): self
     {
-        $this->filters []= [
-            $property,
-            $operator,
-            $value,
+        $this->filter [] = [
+            "operator" => $operator,
+            "property" => $property,
+            "targetValue" => $value,
         ];
 
         return $this;
     }
 
-    public function setOrder(string $property, string $direction = self::ORDER_DIRECTION_ASCENDING):self
+    public function setOrder(string $property, string $direction = self::ORDER_DIRECTION_ASCENDING): self
     {
         $this->orderBy = [
             $property => $direction,

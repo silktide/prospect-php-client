@@ -2,8 +2,8 @@
 
 namespace Silktide\ProspectClient\ApiRequest;
 
+use Error;
 use Silktide\ProspectClient\ApiResponse\ReanalyzeReportApiResponse;
-use TypeError;
 
 class ReanalyzeReportApiRequest extends AbstractApiRequest
 {
@@ -16,8 +16,7 @@ class ReanalyzeReportApiRequest extends AbstractApiRequest
     {
         try {
             $this->apiPathSuffix = $this->id;
-        }
-        catch(TypeError $error) {
+        } catch (Error $error) {
             throw new ReportIdNotSetException();
         }
 
@@ -39,6 +38,7 @@ class ReanalyzeReportApiRequest extends AbstractApiRequest
         $this->body[$key] = $value;
         return $this;
     }
+
     /**
      * Silktide Prospect will make a POST callback to this URL with the JSON report data.
      * @param string $uri

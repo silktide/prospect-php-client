@@ -10,6 +10,7 @@ abstract class AbstractApiResponse
 
     public function __construct(ResponseInterface $httpResponse)
     {
-        $this->body = \GuzzleHttp\json_decode($httpResponse->getBody(), true);
+        $body = $httpResponse->getBody();
+        $this->body = \GuzzleHttp\json_decode($body, true);
     }
 }

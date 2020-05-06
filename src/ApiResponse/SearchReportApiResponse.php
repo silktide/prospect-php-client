@@ -10,8 +10,9 @@ class SearchReportApiResponse extends AbstractApiResponse implements Countable, 
 {
     private int $iteratorKey = 0;
 
-    public function getByIndex(int $index): ?Report {
-        if(!isset($this->body["reports"][$index])) {
+    public function getByIndex(int $index): ?Report
+    {
+        if (!isset($this->body["reports"][$index])) {
             return null;
         }
 
@@ -33,7 +34,7 @@ class SearchReportApiResponse extends AbstractApiResponse implements Countable, 
         return isset($this->body["reports"][$this->iteratorKey]);
     }
 
-    public function current():Report
+    public function current(): Report
     {
         return new Report($this->body["reports"][$this->iteratorKey]);
     }

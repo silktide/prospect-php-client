@@ -15,10 +15,8 @@ class AbstractApiJsonResponse extends AbstractApiResponse
         parent::__construct($httpResponse);
         $body = $httpResponse->getBody();
 
-        if(is_null($body)) {
-            $this->jsonResponse = null;
-        }
-        else {
+        $this->jsonResponse = null;
+        if (!is_null($body)) {
             $this->jsonResponse = json_decode($body, true);
         }
     }

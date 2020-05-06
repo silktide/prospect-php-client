@@ -15,7 +15,8 @@ class CreateReportApiRequest extends AbstractApiRequest
         return new CreateReportApiResponse($httpResponse);
     }
 
-    public function setUrl(string $url): self {
+    public function setUrl(string $url): self
+    {
         $this->body["url"] = $url;
         return $this;
     }

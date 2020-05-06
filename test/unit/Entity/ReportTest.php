@@ -9,66 +9,70 @@ class ReportTest extends TestCase
 {
     public function testGetId()
     {
-        $expectedId = uniqid();
-        $mockBodyFields = (object)[
-            "report_id" => $expectedId,
-        ];
-
-        $sut = new Report($mockBodyFields);
-        self::assertEquals($expectedId, $sut->getId());
+        $val = uniqid("reportId-");
+        $sut = new Report(["report_id" => $val]);
+        self::assertEquals($val, $sut->getId());
     }
 
     public function testGetAccountId()
     {
-        $expectedAccountId = uniqid("account-");
-        $mockBodyFields = (object)[
-            "account_id" => $expectedAccountId,
-        ];
-
-        $sut = new Report($mockBodyFields);
-        self::assertEquals($expectedAccountId, $sut->getAccountId());
+        $val = uniqid("accountId-");
+        $sut = new Report(["account_id" => $val]);
+        self::assertEquals($val, $sut->getAccountId());
     }
 
     public function testGetDomain()
     {
-        $expectedDomain = uniqid("www.");
-        $mockBodyFields = (object)[
-            "domain" => $expectedDomain,
-        ];
-
-        $sut = new Report($mockBodyFields);
-        self::assertEquals($expectedDomain, $sut->getDomain());
+        $val = uniqid("domain-");
+        $sut = new Report(["domain" => $val]);
+        self::assertEquals($val, $sut->getDomain());
     }
 
     public function testGetOverallScore()
     {
-        $expectedScore = random_int(0, 100);
-        $mockBodyFields = (object)[
-            "overall_score" => $expectedScore,
-        ];
-
-        $sut = new Report($mockBodyFields);
-        self::assertEquals($expectedScore, $sut->getOverallScore());
+        $val = rand(1, 99);
+        $sut = new Report(["overall_score" => $val]);
+        self::assertEquals($val, $sut->getOverallScore());
     }
 
     public function testGetReportSection()
     {
-        $sectionContactDetails = (object)[
-            "email" => false,
-            "telephone" => "01234 567890",
-        ];
-        $sectionLocalPresence = (object)[
-            "detected_phone" => "+44 1322 460460",
-            "detected_address" => "Silktide LTD, Brunel Parkway, Pride Park, DE24 8HR, United Kingdom, United Kingdom",
-            "detected_name" => "Silktide",
-        ];
-        $mockBodyFields = (object)[
-            "contact_details" => $sectionContactDetails,
-            "local_presence" => $sectionLocalPresence,
+        $sectionName = uniqid("name-");
+        $json = [
+            $sectionName => [
+                "example1" => 123,
+                "example2" => 456,
+            ],
         ];
 
-        $sut = new Report($mockBodyFields);
-        self::assertEquals($sectionContactDetails, $sut->getReportSection("contact_details"));
-        self::assertEquals($sectionLocalPresence, $sut->getReportSection("local_presence"));
+        $sut = new Report($json);
+        self::assertEquals($json[$sectionName], $sut->getReportSection($sectionName));
+    }
+
+    public function testGetMetaValue()
+    {
+        $metaKey = uniqid("key-");
+        $metaValue = uniqid("value-");
+
+        $json = [
+            "meta" => [
+                $metaKey => $metaValue,
+            ]
+        ];
+
+        $sut = new Report($json);
+        self::assertEquals($json["meta"][$metaKey], $sut->getMetaValue($metaKey));
+    }
+
+    public function testGetValue()
+    {
+        $key = uniqid("key-");
+        $value = uniqid("value-");
+        $json = [
+            $key => $value
+        ];
+
+        $sut = new Report($json);
+        self::assertEquals($value, $sut->getValue($key));
     }
 }

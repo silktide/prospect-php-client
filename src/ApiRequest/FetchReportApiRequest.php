@@ -1,7 +1,7 @@
 <?php
 namespace Silktide\ProspectClient\ApiRequest;
 
-use TypeError;
+use Error;
 use Silktide\ProspectClient\ApiException\ReportStillRunningException;
 use Silktide\ProspectClient\ApiResponse\FetchReportApiResponse;
 
@@ -16,14 +16,13 @@ class FetchReportApiRequest extends AbstractApiRequest
     {
         try {
             $this->apiPathSuffix = $this->id;
-        }
-        catch(TypeError $error) {
+        } catch (Error $error) {
             throw new ReportIdNotSetException();
         }
 
         $httpResponse = $this->makeHttpRequest();
 
-        switch($httpResponse->getStatusCode()) {
+        switch ($httpResponse->getStatusCode()) {
             case 202:
                 throw new ReportStillRunningException($this->id);
         }
