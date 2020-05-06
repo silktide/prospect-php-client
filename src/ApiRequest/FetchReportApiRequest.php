@@ -4,18 +4,28 @@ namespace Silktide\ProspectClient\ApiRequest;
 use Error;
 use Silktide\ProspectClient\ApiException\ReportStillRunningException;
 use Silktide\ProspectClient\ApiResponse\FetchReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\AbstractApiResponse;
+use TypeError;
 
 class FetchReportApiRequest extends AbstractApiRequest
 {
-    protected string $apiPath = "report";
-    protected string $apiMethod = "get";
+    /** @var string */
+    protected $apiPath = "report";
+    /** @var string */
+    protected $apiMethod = "get";
 
-    private string $id;
+    /** @var */
+    private $id;
 
-    public function execute(): FetchReportApiResponse
+    /** @return FetchReportApiResponse */
+    public function execute(): AbstractApiResponse
     {
         try {
             $this->apiPathSuffix = $this->id;
+            // TODO: Temporary fix while PHP 7.2 is a requirement:
+            if(!$this->id) {
+                throw new TypeError("ID is not yet set");
+            }
         } catch (Error $error) {
             throw new ReportIdNotSetException();
         }
@@ -30,7 +40,7 @@ class FetchReportApiRequest extends AbstractApiRequest
         return new FetchReportApiResponse($httpResponse);
     }
 
-    public function setId(string $reportId)
+    public function setId(string $reportId): void
     {
         $this->id = $reportId;
     }

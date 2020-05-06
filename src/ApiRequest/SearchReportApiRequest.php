@@ -3,6 +3,7 @@
 namespace Silktide\ProspectClient\ApiRequest;
 
 use Silktide\ProspectClient\ApiResponse\SearchReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\AbstractApiResponse;
 
 class SearchReportApiRequest extends AbstractApiRequest
 {
@@ -32,13 +33,18 @@ class SearchReportApiRequest extends AbstractApiRequest
     const ORDER_PROPERTY_OVERALL_SCORE = "overall_score";
     const ORDER_PROPERTY_OVERALL = "overall";
 
-    protected string $apiPath = "reports";
-    protected string $apiMethod = "get";
+    /** @var string */
+    protected $apiPath = "reports";
+    /** @var string */
+    protected $apiMethod = "get";
 
-    private array $filter = [];
-    private array $orderBy = [];
+    /** @var array */
+    private $filter = [];
+    /** @var array */
+    private $orderBy = [];
 
-    public function execute(): SearchReportApiResponse
+    /** @return SearchReportApiResponse */
+    public function execute(): AbstractApiResponse
     {
         if (!empty($this->orderBy)) {
             $this->query["order"] = $this->orderBy;

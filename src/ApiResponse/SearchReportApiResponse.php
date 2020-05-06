@@ -8,7 +8,8 @@ use Silktide\ProspectClient\Entity\Report;
 
 class SearchReportApiResponse extends AbstractApiResponse implements Countable, Iterator
 {
-    private int $iteratorKey = 0;
+    /** @var int */
+    private $iteratorKey = 0;
 
     public function getByIndex(int $index): ?Report
     {

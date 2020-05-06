@@ -11,8 +11,10 @@ class HttpWrapper
     const API_HOST = "api.prospect.silktide.com";
     const API_PATH_VERSION = "/api/v1";
 
-    private string $apiKey;
-    private GuzzleClient $guzzle;
+    /** @var string */
+    private $apiKey;
+    /** @var GuzzleClient */
+    private $guzzle;
 
     public function __construct(string $apiKey, GuzzleClient $guzzle = null)
     {

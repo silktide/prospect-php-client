@@ -6,7 +6,8 @@ use Psr\Http\Message\ResponseInterface;
 
 abstract class AbstractApiResponse
 {
-    protected array $body;
+    /** @var array */
+    protected $body;
 
     public function __construct(ResponseInterface $httpResponse)
     {

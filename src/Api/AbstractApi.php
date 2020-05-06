@@ -6,7 +6,8 @@ use Silktide\ProspectClient\Http\HttpWrapper;
 
 abstract class AbstractApi
 {
-    protected HttpWrapper $httpWrapper;
+    /** @var HttpWrapper */
+    protected $httpWrapper;
 
     public function __construct(HttpWrapper $httpWrapper)
     {

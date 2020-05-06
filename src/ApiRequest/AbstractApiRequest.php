@@ -7,13 +7,19 @@ use Silktide\ProspectClient\Http\HttpWrapper;
 
 abstract class AbstractApiRequest
 {
-    protected HttpWrapper $httpWrapper;
-    protected array $query;
-    protected array $body;
+    /** @var HttpWrapper */
+    protected $httpWrapper;
+    /** @var array */
+    protected $query;
+    /** @var array */
+    protected $body;
 
-    protected string $apiPath = "";
-    protected string $apiPathSuffix = "";
-    protected string $apiMethod = "get";
+    /** @var string */
+    protected $apiPath = "";
+    /** @var string */
+    protected $apiPathSuffix = "";
+    /** @var string */
+    protected $apiMethod = "get";
 
     public function __construct(HttpWrapper $httpWrapper)
     {

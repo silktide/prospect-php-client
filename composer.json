@@ -3,7 +3,7 @@
 	"description": "PHP client for integrating Prospect into your projects.",
 
 	"require": {
-		"php": "^7.4",
+		"php": "^7.2",
 		"ext-json": "*",
 		"guzzlehttp/guzzle": "~6.0"
 	},

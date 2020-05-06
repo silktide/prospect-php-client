@@ -6,7 +6,7 @@ use Silktide\ProspectClient\ApiException\ReportStillRunningException;
 use Silktide\ProspectClient\ApiRequest\FetchReportApiRequest;
 use Silktide\ProspectClient\ApiRequest\ReportIdNotSetException;
 
-class FetchReportApiRequestRequestTest extends HttpRequestTestCase
+class FetchReportApiRequestTest extends HttpRequestTestCase
 {
     public function testSetId()
     {

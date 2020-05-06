@@ -4,18 +4,28 @@ namespace Silktide\ProspectClient\ApiRequest;
 
 use Error;
 use Silktide\ProspectClient\ApiResponse\ReanalyzeReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\AbstractApiResponse;
+use TypeError;
 
 class ReanalyzeReportApiRequest extends AbstractApiRequest
 {
-    protected string $apiPath = "/report";
-    protected string $apiMethod = "post";
+    /** @var string */
+    protected $apiPath = "/report";
+    /** @var string */
+    protected $apiMethod = "post";
 
-    private string $id;
+    /** @var string */
+    private $id;
 
-    public function execute(): ReanalyzeReportApiResponse
+    /** @return ReanalyzeReportApiResponse */
+    public function execute(): AbstractApiResponse
     {
         try {
             $this->apiPathSuffix = $this->id;
+            // TODO: Temporary fix while PHP 7.2 is a requirement:
+            if(!$this->id) {
+                throw new TypeError("ID is not yet set");
+            }
         } catch (Error $error) {
             throw new ReportIdNotSetException();
         }

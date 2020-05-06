@@ -4,7 +4,8 @@ namespace Silktide\ProspectClient\Entity;
 
 abstract class AbstractEntity
 {
-    protected array $jsonData;
+    /** @var array */
+    protected $jsonData;
 
     public function __construct(array $jsonData)
     {

@@ -3,13 +3,17 @@ namespace Silktide\ProspectClient\ApiRequest;
 
 use DateTimeInterface;
 use Silktide\ProspectClient\ApiResponse\CreateReportApiResponse;
+use Silktide\ProspectClient\ApiResponse\AbstractApiResponse;
 
 class CreateReportApiRequest extends AbstractApiRequest
 {
-    protected string $apiPath = "report";
-    protected string $apiMethod = "POST";
+    /** @var string */
+    protected $apiPath = "report";
+    /** @var string */
+    protected $apiMethod = "POST";
 
-    public function execute(): CreateReportApiResponse
+    /** @return CreateReportApiResponse */
+    public function execute(): AbstractApiResponse
     {
         $httpResponse = $this->makeHttpRequest();
         return new CreateReportApiResponse($httpResponse);
