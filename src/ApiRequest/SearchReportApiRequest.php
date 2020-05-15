@@ -47,10 +47,10 @@ class SearchReportApiRequest extends AbstractApiRequest
     public function execute(): AbstractApiResponse
     {
         if (!empty($this->orderBy)) {
-            $this->query["order"] = $this->orderBy;
+            $this->query["order"] = json_encode($this->orderBy);
         }
         if (!empty($this->filter)) {
-            $this->query["filter"] = $this->filter;
+            $this->query["filter"] = json_encode($this->filter);
         }
 
         $httpResponse = $this->makeHttpRequest();

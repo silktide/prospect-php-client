@@ -20,6 +20,8 @@ abstract class AbstractApiRequest
     protected $apiPathSuffix = "";
     /** @var string */
     protected $apiMethod = "get";
+    /** @var array */
+    protected $apiQuery = [];
 
     public function __construct(HttpWrapper $httpWrapper)
     {
@@ -32,10 +34,15 @@ abstract class AbstractApiRequest
 
     protected function makeHttpRequest(): ResponseInterface
     {
+        $query = array_merge($this->apiQuery ?? [], $this->getQueryParameters() ?? []);
+        if(empty($query)) {
+            $query = null;
+        }
+
         return $this->httpWrapper->makeRequest(
             implode("/", [$this->apiPath, $this->apiPathSuffix]),
             strtoupper($this->apiMethod),
-            $this->getQueryParameters(),
+            $query,
             $this->getBodyParameters()
         );
     }

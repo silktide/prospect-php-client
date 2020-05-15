@@ -118,7 +118,7 @@ class HttpWrapperTest extends TestCase
             "key1" => "value1",
             "key2" => "value2",
         ];
-        $bodyString = urlencode(json_encode($body));
+        $bodyString = json_encode($body);
 
         $baseUri = HttpWrapper::API_SCHEME . "://"
             . HttpWrapper::API_HOST

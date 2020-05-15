@@ -12,6 +12,8 @@ class FetchReportApiResponseTest extends HttpResponseTestCase
     {
         $httpResponse = self::getMockHttpResponse(
             [
+                "status" => "testing",
+                "report_status" => "report-testing",
                 "report" => ["testKey" => "testValue"],
             ]
         );

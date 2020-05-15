@@ -39,7 +39,7 @@ class CreateReportApiRequest extends AbstractApiRequest
     /** The analysis will not run if the website has already been tested after the supplied date. */
     public function setCheckForExisting(DateTimeInterface $since): self
     {
-        $this->body["check_for_existing"] = $since->format(DateTimeInterface::ISO8601);
+        $this->body["check_for_existing"] = $since->format(DateTimeInterface::ATOM);
         return $this;
     }
 

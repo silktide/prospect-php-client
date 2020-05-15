@@ -13,7 +13,8 @@ class FetchReportApiRequestTest extends HttpRequestTestCase
         $id = uniqid("id-");
         $httpWrapper = self::getMockHttpWrapper(
             "report/$id",
-            "GET"
+            "GET",
+            ["categories" => "true"]
         );
         $sut = new FetchReportApiRequest($httpWrapper);
         $sut->setId($id);
@@ -25,23 +26,6 @@ class FetchReportApiRequestTest extends HttpRequestTestCase
         $httpWrapper = self::getMockHttpWrapper();
         $sut = new FetchReportApiRequest($httpWrapper);
         self::expectException(ReportIdNotSetException::class);
-        $sut->execute();
-    }
-
-    public function testExecute202()
-    {
-        $id = uniqid("id-");
-        $httpWrapper = self::getMockHttpWrapper(
-            "report/$id",
-            "GET",
-            null,
-            null,
-            [],
-            202
-        );
-        $sut = new FetchReportApiRequest($httpWrapper);
-        $sut->setId($id);
-        self::expectException(ReportStillRunningException::class);
         $sut->execute();
     }
 }

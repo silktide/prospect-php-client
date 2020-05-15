@@ -30,6 +30,15 @@ class HttpRequestTestCase extends TestCase
         $guzzle->method("request")
             ->willReturn($response);
 
+        // JSON encode any nested values in the query:
+        if($requestQuery) {
+            foreach($requestQuery as $key => $value) {
+                if(is_array($value)) {
+                    $requestQuery[$key] = json_encode($value);
+                }
+            }
+        }
+
         /** @var MockObject|HttpWrapper $httpWrapper */
         $httpWrapper = self::getMockBuilder(HttpWrapper::class)
             ->setConstructorArgs([$apiKey, $guzzle])

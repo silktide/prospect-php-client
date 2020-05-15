@@ -4,6 +4,7 @@ namespace Silktide\ProspectClient\UnitTest\Api;
 
 use Silktide\ProspectClient\Api\ReportApi;
 use Silktide\ProspectClient\ApiRequest\CreateReportApiRequest;
+use Silktide\ProspectClient\ApiRequest\FetchReportApiRequest;
 use Silktide\ProspectClient\ApiRequest\ReanalyzeReportApiRequest;
 use Silktide\ProspectClient\ApiRequest\SearchReportApiRequest;
 use Silktide\ProspectClient\Entity\Report;
@@ -16,20 +17,10 @@ class ReportApiRequestTest extends HttpRequestTestCase
     {
         $testId = uniqid("id-");
 
-        $httpWrapper = self::getMockHttpWrapper(
-            "report/$testId",
-            "GET",
-            null,
-            null,
-            [
-                "report" => [
-                    "domain" => "example.silktide.com"
-                ]
-            ]
-        );
+        $httpWrapper = self::createMock(HttpWrapper::class);
 
         $sut = new ReportApi($httpWrapper);
-        self::assertInstanceOf(Report::class, $sut->fetch($testId));
+        self::assertInstanceOf(FetchReportApiRequest::class, $sut->fetch());
     }
 
     public function testCreate()

@@ -51,7 +51,7 @@ class HttpWrapper
         ];
 
         if(!empty($body)) {
-            $options["body"] = urlencode(json_encode($body));
+            $options["body"] = json_encode($body);
         }
 
         return $this->guzzle->request(

@@ -23,7 +23,16 @@ foreach($allReports as $reportId => $report) {
 
 sleep(1);
 echo "Fetching the first report..." . PHP_EOL;
-$report = $reportApi->fetch($reportId);
+$fetchResponse = $reportApi->fetch()
+    ->setId($reportId)
+    ->execute();
+$report = $fetchResponse->getReport();
+$categories = $fetchResponse->getCategories();
+
+echo "Category scores: " . PHP_EOL;
+foreach($categories as $label => $category) {
+    echo "$label: " . $category->getScore() . PHP_EOL;
+}
 
 echo "This report was requested by " . $report->getMetaValue("requested_by") . PHP_EOL;
 echo "Its overall score is " . $report->getOverallScore() . PHP_EOL;
@@ -43,7 +52,8 @@ do {
     $report = null;
 
     try {
-        $report = $reportApi->fetch($reportId);
+        $fetchResponse = $reportApi->fetch()->setId("$reportId")->execute();
+        $report = $fetchResponse->getReport();
     }
     catch(ReportStillRunningException $exception) {
         echo "Still running...";

@@ -13,6 +13,7 @@ class FetchReportApiRequest extends AbstractApiRequest
     protected $apiPath = "report";
     /** @var string */
     protected $apiMethod = "get";
+    protected $apiQuery = ["categories" => "true"];
 
     /** @var */
     private $id;
@@ -33,15 +34,16 @@ class FetchReportApiRequest extends AbstractApiRequest
         $httpResponse = $this->makeHttpRequest();
 
         switch ($httpResponse->getStatusCode()) {
-            case 202:
-                throw new ReportStillRunningException($this->id);
+//            case 202:
+//                throw new ReportStillRunningException($this->id);
         }
 
         return new FetchReportApiResponse($httpResponse);
     }
 
-    public function setId(string $reportId): void
+    public function setId(string $reportId): self
     {
         $this->id = $reportId;
+        return $this;
     }
 }

@@ -6,8 +6,10 @@ use Silktide\ProspectClient\Http\HttpWrapper;
 
 class ProspectClient
 {
-    private HttpWrapper $httpWrapper;
-    private ReportApi $reportApi;
+    /** @var HttpWrapper */
+    private $httpWrapper;
+    /** @var ReportApi */
+    private $reportApi;
 
     public function __construct(string $apiKey, HttpWrapper $httpWrapper = null)
     {

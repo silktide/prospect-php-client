@@ -44,7 +44,7 @@ class CreateReportApiRequestRequestTest extends HttpRequestTestCase
 
         $httpWrapper = self::getCreateMockHttpWrapper(
             [
-                "check_for_existing" => $dateTime->format(DateTimeInterface::ISO8601),
+                "check_for_existing" => $dateTime->format(DateTimeInterface::ATOM),
             ]
         );
 

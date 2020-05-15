@@ -25,11 +25,8 @@ class ReportApi extends AbstractApi
         return new SearchReportApiRequest($this->httpWrapper);
     }
 
-    public function fetch(string $reportId): Report
+    public function fetch(): FetchReportApiRequest
     {
-        $request = new FetchReportApiRequest($this->httpWrapper);
-        $request->setId($reportId);
-        $response = $request->execute();
-        return $response->getReport();
+        return new FetchReportApiRequest($this->httpWrapper);
     }
 }
