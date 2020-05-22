@@ -10,7 +10,7 @@ use TypeError;
 class ReanalyzeReportApiRequest extends AbstractApiRequest
 {
     /** @var string */
-    protected $apiPath = "/report";
+    protected $apiPath = "report";
     /** @var string */
     protected $apiMethod = "post";
 
@@ -34,9 +34,10 @@ class ReanalyzeReportApiRequest extends AbstractApiRequest
         return new ReanalyzeReportApiResponse($httpResponse);
     }
 
-    public function setId(string $reportId)
+    public function setId(string $reportId): self
     {
         $this->id = $reportId;
+        return $this;
     }
 
     /** Pass values to set as one of your custom report fields. */

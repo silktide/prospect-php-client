@@ -5,64 +5,56 @@ use Silktide\ProspectClient\ApiException\ReportStillRunningException;
 use Silktide\ProspectClient\ProspectClient;
 use Silktide\ProspectClient\ApiRequest\SearchReportApiRequest;
 
+$host = "bbc.co.uk";
+
 $apiKey = getenv("PROSPECT_API_KEY");
 $prospectClient = new ProspectClient($apiKey);
-
 $reportApi = $prospectClient->getReportApi();
 
-$allReports = $reportApi->search()->setOrder(
-    SearchReportApiRequest::ORDER_PROPERTY_RUN_DATE,
-    SearchReportApiRequest::ORDER_DIRECTION_DESCENDING
-)->execute();
-
-echo "There are " . count($allReports) . " reports already made on the account with the following IDs:" . PHP_EOL;
-
-foreach($allReports as $reportId => $report) {
-    echo $reportId . "(" . $report->getDomain() . ")" . PHP_EOL;
-}
-
-sleep(1);
-echo "Fetching the first report..." . PHP_EOL;
-$fetchResponse = $reportApi->fetch()
-    ->setId($reportId)
-    ->execute();
-$report = $fetchResponse->getReport();
-$categories = $fetchResponse->getCategories();
-
-echo "Category scores: " . PHP_EOL;
-foreach($categories as $label => $category) {
-    echo "$label: " . $category->getScore() . PHP_EOL;
-}
-
-echo "This report was requested by " . $report->getMetaValue("requested_by") . PHP_EOL;
-echo "Its overall score is " . $report->getOverallScore() . PHP_EOL;
-
-echo "Creating a new report for example.silktide.com ..." . PHP_EOL;
-
-$response = $reportApi->create()
-    ->setUrl("https://example.silktide.com")
-    ->setCompletionWebhook("https://example.silktide.com/report_complete.php")
-    ->setAddress("Silktide LTD", "", "Brunel Parkway, Pride Park", "Derby", "Derbyshire", "DE24 8HR", "GB")
+$createResponse = $reportApi->create()
+    ->setUrl("https://www.$host")
+    ->setCustomField("nibblerHostname", $host)
+    ->setName("BBC")
     ->execute();
 
-$reportId = $response->getReportId();
-echo "Created report: " . $reportId . PHP_EOL;
+$createdId = $createResponse->getReportId();
+echo "Created ID: " . $createdId . PHP_EOL;
 
-do {
-    $report = null;
+$searchResponse = $reportApi->search()
+    ->addFilter(
+        SearchReportApiRequest::FILTER_PROPERTY_DOMAIN,
+        SearchReportApiRequest::FILTER_OPERATOR_EQUAL,
+        $host
+    )
+    ->execute();
 
-    try {
-        $fetchResponse = $reportApi->fetch()->setId("$reportId")->execute();
-        $report = $fetchResponse->getReport();
-    }
-    catch(ReportStillRunningException $exception) {
-        echo "Still running...";
-        sleep(5);
-    }
+$report = $searchResponse->getByIndex(0);
+
+if($report) {
+    echo "Got the report as you'd expect: " . $report->getId() . PHP_EOL;
 }
-while(is_null($report));
+else {
+    echo "Not got the report using normal search." . PHP_EOL;
+}
 
-echo "Overall score: " . $report->getOverallScore() . PHP_EOL;
+$searchResponse = $reportApi->search()
+    ->addFilter(
+        SearchReportApiRequest::FILTER_PROPERTY_DOMAIN,
+        SearchReportApiRequest::FILTER_OPERATOR_STR_CONTAINS,
+        $host
+    )
+    ->execute();
 
-$amountOfContentSection = $report->getReportSection("amount_of_content");
-echo "Total word count: " . $amountOfContentSection["total_word_count"] . PHP_EOL;
+$report = $searchResponse->getByIndex(0);
+
+if($report) {
+    echo "Got the report with str_contains: " . $report->getId() . PHP_EOL;
+}
+else {
+    echo "Not got the report using str_contains." . PHP_EOL;
+}
+
+//$searchResponse = $reportApi->search()
+//    ->addFilter(
+//        "nibbler.domain"
+//    )

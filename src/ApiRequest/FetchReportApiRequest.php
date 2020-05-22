@@ -13,7 +13,9 @@ class FetchReportApiRequest extends AbstractApiRequest
     protected $apiPath = "report";
     /** @var string */
     protected $apiMethod = "get";
-    protected $apiQuery = ["categories" => "true"];
+    protected $apiQuery = [
+        "categories" => "true",
+    ];
 
     /** @var */
     private $id;
@@ -44,6 +46,18 @@ class FetchReportApiRequest extends AbstractApiRequest
     public function setId(string $reportId): self
     {
         $this->id = $reportId;
+        return $this;
+    }
+
+    public function includeDatasets(bool $include = true): self
+    {
+        if($include) {
+            $this->apiQuery["include_datasets"] = "true";
+        }
+        elseif(isset($this->apiQuery["include_datasets"])) {
+            unset($this->apiQuery["include_datasets"]);
+        }
+
         return $this;
     }
 }

@@ -39,8 +39,20 @@ class HttpWrapper
                 ])
             );
 
+        $uri = (string)$uri;
+
         if(!empty($query)) {
-            $uri = $uri->withQuery(http_build_query($query));
+            $queryString = "";
+
+            foreach($query as $key => $value) {
+                if($queryString) {
+                    $queryString .= "&";
+                }
+
+                $queryString .= "$key=$value";
+            }
+
+            $uri = $uri . "?$queryString";
         }
 
         $options = [

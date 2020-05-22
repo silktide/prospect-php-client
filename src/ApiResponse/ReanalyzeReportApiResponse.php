@@ -2,4 +2,4 @@
 
 namespace Silktide\ProspectClient\ApiResponse;
 
-class ReanalyzeReportApiResponse extends AbstractApiResponse {}
+class ReanalyzeReportApiResponse extends ReportApiResponse {}

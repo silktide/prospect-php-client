@@ -30,6 +30,16 @@ class ReportApiResponse extends AbstractApiJsonResponse
 
     public function getReportId(): string
     {
-        return $this->jsonResponse["reportId"];
+        return $this->jsonResponse["reportId"] ?? $this->jsonResponse["report"]["report_id"];
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->jsonResponse["status"] ?? null;
+    }
+
+    public function getReportStatus(): ?string
+    {
+        return $this->jsonResponse["report_status"] ?? null;
     }
 }
