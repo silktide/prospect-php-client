@@ -44,7 +44,7 @@ class Report extends AbstractEntity
             return null;
         }
 
-        return $this->jsonData[$name];
+        return $this->jsonData[$name] ?? null;
     }
 
     public function getAllReportSections(): array
