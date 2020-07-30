@@ -42,4 +42,14 @@ class ReportApiResponse extends AbstractApiJsonResponse
     {
         return $this->jsonResponse["report_status"] ?? null;
     }
+
+    public function getResolvedUrl(): ?string
+    {
+        return $this->jsonResponse["resolved_url"] ?? null;
+    }
+
+    public function getProvidedUrl(): ?string
+    {
+        return $this->jsonResponse["provided_url"] ?? null;
+    }
 }
