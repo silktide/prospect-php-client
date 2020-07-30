@@ -12,7 +12,7 @@ class ReportAlreadyExistsException extends ProspectClientException {
     protected $reportId;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $resolvedUrl;
 
@@ -33,19 +33,20 @@ class ReportAlreadyExistsException extends ProspectClientException {
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getResolvedUrl(): string
+    public function getResolvedUrl(): ?string
     {
         return $this->resolvedUrl;
     }
 
     /**
-     * @param string $resolvedUrl
+     * @param string|null $resolvedUrl
      */
-    public function setResolvedUrl(string $resolvedUrl): void
+    public function setResolvedUrl(?string $resolvedUrl): void
     {
         $this->resolvedUrl = $resolvedUrl;
     }
+
 
 }
