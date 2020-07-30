@@ -14,7 +14,12 @@ class ReportApiResponse extends AbstractApiJsonResponse
     {
         switch ($httpResponse->getStatusCode()) {
             case 303:
-                throw new ReportAlreadyExistsException();
+                $body = json_decode($httpResponse->getBody()->getContents(), true);
+                $exception = new ReportAlreadyExistsException();
+                $exception->setReportId($body['reportId']);
+                $exception->setResolvedUrl($body['resolved_url'] ?? null);
+
+                throw $exception;
 
             case 400:
                 throw new ReportPathUnprocessableException();
