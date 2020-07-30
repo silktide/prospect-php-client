@@ -1,21 +1,33 @@
 {
 	"name": "silktide/prospect-php-client",
 	"description": "PHP client for integrating Prospect into your projects.",
+
 	"require": {
-		"php": "^7.4"
+		"php": "^7.2",
+		"ext-json": "*",
+		"guzzlehttp/guzzle": "~6.0"
 	},
+
 	"require-dev": {
 		"phpunit/phpunit": "^8.5"
-	},
+    },
+
 	"authors": [
 		{
 			"name": "Greg Bowler",
 			"email": "greg.bowler@g105b.com"
 		}
 	],
+
 	"autoload": {
 		"psr-4": {
 			"Silktide\\ProspectClient\\": "src"
+		}
+	},
+
+	"autoload-dev": {
+		"psr-4": {
+			"Silktide\\ProspectClient\\UnitTest\\": "test/unit"
 		}
 	}
 }
