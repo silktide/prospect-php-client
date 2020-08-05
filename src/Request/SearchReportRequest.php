@@ -1,11 +1,11 @@
 <?php
 
-namespace Silktide\ProspectClient\ApiRequest;
+namespace Silktide\ProspectClient\Request;
 
-use Silktide\ProspectClient\ApiResponse\SearchReportApiResponse;
-use Silktide\ProspectClient\ApiResponse\AbstractApiResponse;
+use Silktide\ProspectClient\Response\SearchReportResponse;
+use function GuzzleHttp\json_encode;
 
-class SearchReportApiRequest extends AbstractApiRequest
+class SearchReportRequest extends AbstractRequest
 {
     const FILTER_PROPERTY_DOMAIN = "domain";
     const FILTER_PROPERTY_OVERALL_SCORE = "overall_score";
@@ -33,33 +33,37 @@ class SearchReportApiRequest extends AbstractApiRequest
     const ORDER_PROPERTY_OVERALL_SCORE = "overall_score";
     const ORDER_PROPERTY_OVERALL = "overall";
 
-    /** @var string */
-    protected $apiPath = "reports";
-    /** @var string */
-    protected $apiMethod = "get";
+    protected string $path = "reports";
+    protected string $method = "get";
 
-    /** @var array */
-    private $filter = [];
-    /** @var array */
-    private $orderBy = [];
+    /**
+     * @var array<int,array>
+     */
+    private array $filter = [];
 
-    /** @return SearchReportApiResponse */
-    public function execute(): AbstractApiResponse
+    /**
+     * @var array<string, string>
+     */
+    private array $orderBy = [];
+
+    public function execute(): SearchReportResponse
     {
         if (!empty($this->orderBy)) {
-            $this->query["order"] = json_encode($this->orderBy);
-        }
-        if (!empty($this->filter)) {
-            $this->query["filter"] = json_encode($this->filter);
+            $this->queryParams["order"] = json_encode($this->orderBy);
         }
 
-        $httpResponse = $this->makeHttpRequest();
-        return new SearchReportApiResponse($httpResponse);
+        if (!empty($this->filter)) {
+            $this->queryParams["filter"] = json_encode($this->filter);
+        }
+
+        return new SearchReportResponse(
+            $this->httpWrapper->execute($this)
+        );
     }
 
     public function addFilter(string $property, string $operator, string $value): self
     {
-        $this->filter [] = [
+        $this->filter[] = [
             "operator" => $operator,
             "property" => $property,
             "targetValue" => $value,

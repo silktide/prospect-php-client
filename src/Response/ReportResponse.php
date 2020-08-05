@@ -1,14 +1,14 @@
 <?php
 
-namespace Silktide\ProspectClient\ApiResponse;
+namespace Silktide\ProspectClient\Response;
 
 use Psr\Http\Message\ResponseInterface;
-use Silktide\ProspectClient\ApiException\ReportAlreadyExistsException;
-use Silktide\ProspectClient\ApiException\ReportNotFoundException;
-use Silktide\ProspectClient\ApiException\ReportPathDoesNotExistException;
-use Silktide\ProspectClient\ApiException\ReportPathUnprocessableException;
+use Silktide\ProspectClient\Exception\Api\ReportAlreadyExistsException;
+use Silktide\ProspectClient\Exception\Api\ReportNotFoundException;
+use Silktide\ProspectClient\Exception\Api\ReportPathDoesNotExistException;
+use Silktide\ProspectClient\Exception\Api\ReportPathUnprocessableException;
 
-class ReportApiResponse extends AbstractApiJsonResponse
+class ReportResponse extends AbstractResponse
 {
     public function __construct(ResponseInterface $httpResponse)
     {
@@ -18,7 +18,6 @@ class ReportApiResponse extends AbstractApiJsonResponse
                 $exception = new ReportAlreadyExistsException();
                 $exception->setReportId($body['reportId']);
                 $exception->setResolvedUrl($body['resolved_url'] ?? null);
-
                 throw $exception;
 
             case 400:
@@ -35,16 +34,16 @@ class ReportApiResponse extends AbstractApiJsonResponse
 
     public function getReportId(): string
     {
-        return $this->jsonResponse["reportId"] ?? $this->jsonResponse["report"]["report_id"];
+        return $this->response["reportId"] ?? $this->response["report"]["report_id"];
     }
 
     public function getStatus(): ?string
     {
-        return $this->jsonResponse["status"] ?? null;
+        return $this->response["status"] ?? null;
     }
 
     public function getReportStatus(): ?string
     {
-        return $this->jsonResponse["report_status"] ?? null;
+        return $this->response["report_status"] ?? null;
     }
 }

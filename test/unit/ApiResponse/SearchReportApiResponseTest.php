@@ -2,7 +2,7 @@
 
 namespace Silktide\ProspectClient\UnitTest\ApiResponse;
 
-use Silktide\ProspectClient\ApiResponse\SearchReportApiResponse;
+use Silktide\ProspectClient\Response\SearchReportResponse;
 use Silktide\ProspectClient\Entity\Report;
 
 class SearchReportApiResponseTest extends HttpResponseTestCase
@@ -16,7 +16,7 @@ class SearchReportApiResponseTest extends HttpResponseTestCase
                 ]
             ]
         );
-        $sut = new SearchReportApiResponse($httpResponse);
+        $sut = new SearchReportResponse($httpResponse);
         self::assertNull($sut->getByIndex(999));
     }
 
@@ -33,7 +33,7 @@ class SearchReportApiResponseTest extends HttpResponseTestCase
                 ]
             ]
         );
-        $sut = new SearchReportApiResponse($httpResponse);
+        $sut = new SearchReportResponse($httpResponse);
         $report1 = $sut->getByIndex(0);
         $report2 = $sut->getByIndex(1);
 
@@ -61,7 +61,7 @@ class SearchReportApiResponseTest extends HttpResponseTestCase
                 ]
             ]
         );
-        $sut = new SearchReportApiResponse($httpResponse);
+        $sut = new SearchReportResponse($httpResponse);
 
         $i = 0;
         foreach ($sut as $id => $report) {
@@ -92,7 +92,7 @@ class SearchReportApiResponseTest extends HttpResponseTestCase
                 ]
             ]
         );
-        $sut = new SearchReportApiResponse($httpResponse);
+        $sut = new SearchReportResponse($httpResponse);
         self::assertCount(3, $sut);
     }
 }

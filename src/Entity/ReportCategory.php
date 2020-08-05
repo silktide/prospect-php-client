@@ -2,21 +2,38 @@
 
 namespace Silktide\ProspectClient\Entity;
 
-class ReportCategory extends AbstractEntity
+class ReportCategory
 {
+    private string $label;
+    private float $score;
+    private array $sections;
+
+    private function __construct()
+    {
+    }
+
+    public static function create(string $label, float $score, array $sections)
+    {
+        $reportCategory = new ReportCategory();
+        $reportCategory->label = $label;
+        $reportCategory->score = $score;
+        $reportCategory->sections = $sections;
+        return $reportCategory;
+    }
+
     public function getLabel(): string
     {
-        return $this->jsonData["label"];
+        return $this->label;
     }
 
     public function getScore(): float
     {
-        return $this->jsonData["score"];
+        return $this->score;
     }
 
     /** @return string[] */
     public function getSections(): array
     {
-        return $this->jsonData["sections"];
+        $this->sections;
     }
 }

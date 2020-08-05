@@ -3,7 +3,7 @@ require __DIR__ . "/vendor/autoload.php";
 
 use Silktide\ProspectClient\ApiException\ReportStillRunningException;
 use Silktide\ProspectClient\ProspectClient;
-use Silktide\ProspectClient\ApiRequest\SearchReportApiRequest;
+use Silktide\ProspectClient\Request\SearchReportRequest;
 
 $host = "bbc.co.uk";
 
@@ -22,8 +22,8 @@ echo "Created ID: " . $createdId . PHP_EOL;
 
 $searchResponse = $reportApi->search()
     ->addFilter(
-        SearchReportApiRequest::FILTER_PROPERTY_DOMAIN,
-        SearchReportApiRequest::FILTER_OPERATOR_EQUAL,
+        SearchReportRequest::FILTER_PROPERTY_DOMAIN,
+        SearchReportRequest::FILTER_OPERATOR_EQUAL,
         $host
     )
     ->execute();
@@ -39,8 +39,8 @@ else {
 
 $searchResponse = $reportApi->search()
     ->addFilter(
-        SearchReportApiRequest::FILTER_PROPERTY_DOMAIN,
-        SearchReportApiRequest::FILTER_OPERATOR_STR_CONTAINS,
+        SearchReportRequest::FILTER_PROPERTY_DOMAIN,
+        SearchReportRequest::FILTER_OPERATOR_STR_CONTAINS,
         $host
     )
     ->execute();

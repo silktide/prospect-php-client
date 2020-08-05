@@ -2,31 +2,39 @@
 
 namespace Silktide\ProspectClient\Api;
 
-use Silktide\ProspectClient\ApiRequest\CreateReportApiRequest;
-use Silktide\ProspectClient\ApiRequest\FetchReportApiRequest;
-use Silktide\ProspectClient\ApiRequest\ReanalyzeReportApiRequest;
-use Silktide\ProspectClient\ApiRequest\SearchReportApiRequest;
+use Silktide\ProspectClient\Request\CreateReportRequest;
+use Silktide\ProspectClient\Request\FetchReportRequest;
+use Silktide\ProspectClient\Request\ReanalyzeReportRequest;
+use Silktide\ProspectClient\Request\SearchReportRequest;
 use Silktide\ProspectClient\Entity\Report;
+use Silktide\ProspectClient\Http\HttpWrapper;
 
-class ReportApi extends AbstractApi
+class ReportApi
 {
-    public function create(): CreateReportApiRequest
+    protected HttpWrapper $httpWrapper;
+
+    public function __construct(HttpWrapper $httpWrapper)
     {
-        return new CreateReportApiRequest($this->httpWrapper);
+        $this->httpWrapper = $httpWrapper;
     }
 
-    public function reanalyze(): ReanalyzeReportApiRequest
+    public function create(): CreateReportRequest
     {
-        return new ReanalyzeReportApiRequest($this->httpWrapper);
+        return new CreateReportRequest($this->httpWrapper);
     }
 
-    public function search(): SearchReportApiRequest
+    public function reanalyze(): ReanalyzeReportRequest
     {
-        return new SearchReportApiRequest($this->httpWrapper);
+        return new ReanalyzeReportRequest($this->httpWrapper);
     }
 
-    public function fetch(): FetchReportApiRequest
+    public function search(): SearchReportRequest
     {
-        return new FetchReportApiRequest($this->httpWrapper);
+        return new SearchReportRequest($this->httpWrapper);
+    }
+
+    public function fetch(): FetchReportRequest
+    {
+        return new FetchReportRequest($this->httpWrapper);
     }
 }

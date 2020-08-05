@@ -2,14 +2,14 @@
 
 namespace Silktide\ProspectClient\UnitTest\ApiRequest;
 
-use Silktide\ProspectClient\ApiRequest\SearchReportApiRequest;
+use Silktide\ProspectClient\Request\SearchReportRequest;
 
 class SearchReportApiRequestRequestTest extends HttpRequestTestCase
 {
     public function testAddFilter()
     {
         $property = uniqid("property-");
-        $operator = SearchReportApiRequest::FILTER_OPERATOR_EQUAL;
+        $operator = SearchReportRequest::FILTER_OPERATOR_EQUAL;
         $value = uniqid("value-");
         $httpWrapper = self::getSearchMockHttpWrapper(
             [
@@ -22,7 +22,7 @@ class SearchReportApiRequestRequestTest extends HttpRequestTestCase
                 ]
             ]
         );
-        $sut = new SearchReportApiRequest($httpWrapper);
+        $sut = new SearchReportRequest($httpWrapper);
         $sut->addFilter($property, $operator, $value);
         $sut->execute();
     }
@@ -30,13 +30,13 @@ class SearchReportApiRequestRequestTest extends HttpRequestTestCase
     public function testAddFilterMultiple()
     {
         $property1 = uniqid("property-");
-        $operator1 = SearchReportApiRequest::FILTER_OPERATOR_EQUAL;
+        $operator1 = SearchReportRequest::FILTER_OPERATOR_EQUAL;
         $value1 = uniqid("value-");
         $property2 = uniqid("property-");
-        $operator2 = SearchReportApiRequest::FILTER_OPERATOR_EQUAL;
+        $operator2 = SearchReportRequest::FILTER_OPERATOR_EQUAL;
         $value2 = uniqid("value-");
         $property3 = uniqid("property-");
-        $operator3 = SearchReportApiRequest::FILTER_OPERATOR_EQUAL;
+        $operator3 = SearchReportRequest::FILTER_OPERATOR_EQUAL;
         $value3 = uniqid("value-");
 
         $httpWrapper = self::getSearchMockHttpWrapper(
@@ -60,7 +60,7 @@ class SearchReportApiRequestRequestTest extends HttpRequestTestCase
                 ]
             ]
         );
-        $sut = new SearchReportApiRequest($httpWrapper);
+        $sut = new SearchReportRequest($httpWrapper);
         $sut->addFilter($property1, $operator1, $value1);
         $sut->addFilter($property2, $operator2, $value2);
         $sut->addFilter($property3, $operator3, $value3);
@@ -73,11 +73,11 @@ class SearchReportApiRequestRequestTest extends HttpRequestTestCase
         $httpWrapper = self::getSearchMockHttpWrapper(
             [
                 "order" => [
-                    $property => SearchReportApiRequest::ORDER_DIRECTION_ASCENDING,
+                    $property => SearchReportRequest::ORDER_DIRECTION_ASCENDING,
                 ]
             ]
         );
-        $sut = new SearchReportApiRequest($httpWrapper);
+        $sut = new SearchReportRequest($httpWrapper);
         $sut->setOrder($property);
         $sut->execute();
     }
@@ -88,12 +88,12 @@ class SearchReportApiRequestRequestTest extends HttpRequestTestCase
         $httpWrapper = self::getSearchMockHttpWrapper(
             [
                 "order" => [
-                    $property => SearchReportApiRequest::ORDER_DIRECTION_DESCENDING,
+                    $property => SearchReportRequest::ORDER_DIRECTION_DESCENDING,
                 ]
             ]
         );
-        $sut = new SearchReportApiRequest($httpWrapper);
-        $sut->setOrder($property, SearchReportApiRequest::ORDER_DIRECTION_DESCENDING);
+        $sut = new SearchReportRequest($httpWrapper);
+        $sut->setOrder($property, SearchReportRequest::ORDER_DIRECTION_DESCENDING);
         $sut->execute();
     }
 

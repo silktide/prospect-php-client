@@ -1,6 +1,6 @@
 <?php
 
-namespace Silktide\ProspectClient;
+namespace Silktide\ProspectClient\Exception;
 
 use RuntimeException;
 

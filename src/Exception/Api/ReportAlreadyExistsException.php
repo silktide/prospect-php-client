@@ -1,10 +1,11 @@
 <?php
 
-namespace Silktide\ProspectClient\ApiException;
+namespace Silktide\ProspectClient\Exception\Api;
 
-use Silktide\ProspectClient\ProspectClientException;
+use Silktide\ProspectClient\Exception\ProspectClientException;
 
-class ReportAlreadyExistsException extends ProspectClientException {
+class ReportAlreadyExistsException extends ProspectClientException
+{
 
     /**
      * @var string

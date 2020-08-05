@@ -4,6 +4,7 @@ namespace Silktide\ProspectClient\Http;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
+use Silktide\ProspectClient\Request\AbstractRequest;
 
 class HttpWrapper
 {
@@ -11,10 +12,8 @@ class HttpWrapper
     const API_HOST = "api.prospect.silktide.com";
     const API_PATH_VERSION = "/api/v1";
 
-    /** @var string */
-    private $apiKey;
-    /** @var GuzzleClient */
-    private $guzzle;
+    private string $apiKey;
+    private GuzzleClient $guzzle;
 
     public function __construct(string $apiKey, GuzzleClient $guzzle = null)
     {
@@ -22,12 +21,17 @@ class HttpWrapper
         $this->guzzle = $guzzle ?? new GuzzleClient();
     }
 
-    public function makeRequest(
-        string $endpointPath = "/",
-        string $method = "get",
-        ?array $query = null,
-        ?array $body = null
-    ):ResponseInterface
+    public function execute(AbstractRequest $request) : ResponseInterface
+    {
+        return $this->makeRequest(
+            $request->getPath(),
+            $request->getMethod(),
+            $request->getQueryParams(),
+            $request->getBody()
+        );
+    }
+
+    private function makeRequest(string $endpointPath = "/", string $method = "get", array $query = [], array $body = []) : ResponseInterface
     {
         $uri = (new Uri())
             ->withScheme(self::API_SCHEME)
@@ -41,28 +45,15 @@ class HttpWrapper
 
         $uri = (string)$uri;
 
-        if(!empty($query)) {
-            $queryString = "";
-
-            foreach($query as $key => $value) {
-                if($queryString) {
-                    $queryString .= "&";
-                }
-
-                $queryString .= "$key=$value";
-            }
-
-            $uri = $uri . "?$queryString";
-        }
-
         $options = [
             "headers" => [
                 "api-key" => $this->apiKey,
                 "content-type" => "application/json",
-            ]
+            ],
+            "query" => $query
         ];
 
-        if(!empty($body)) {
+        if (count($body) > 0) {
             $options["body"] = json_encode($body);
         }
 
