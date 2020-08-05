@@ -2,6 +2,7 @@
 
 namespace Silktide\ProspectClient\Request;
 
+use Silktide\ProspectClient\Http\HttpWrapper;
 use Silktide\ProspectClient\Response\FetchReportResponse;
 
 class FetchReportRequest extends AbstractRequest
@@ -11,24 +12,17 @@ class FetchReportRequest extends AbstractRequest
         "categories" => "true"
     ];
 
-    private ?string $id;
+    private string $reportId;
+
+    public function __construct(HttpWrapper $httpWrapper, string $reportId)
+    {
+        parent::__construct($httpWrapper);
+        $this->reportId = $reportId;
+    }
 
     public function getPath(): string
     {
-        return $this->path . "/" . $this->id;
-    }
-
-    public function execute(): FetchReportResponse
-    {
-        return new FetchReportResponse(
-            $this->httpWrapper->execute($this)
-        );
-    }
-
-    public function setId(string $reportId): self
-    {
-        $this->id = $reportId;
-        return $this;
+        return $this->path . "/" . $this->reportId;
     }
 
     public function includeDatasets(bool $include = true): self
@@ -40,5 +34,12 @@ class FetchReportRequest extends AbstractRequest
         }
 
         return $this;
+    }
+
+    public function execute(): FetchReportResponse
+    {
+        return new FetchReportResponse(
+            $this->httpWrapper->execute($this)
+        );
     }
 }
