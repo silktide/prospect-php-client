@@ -2,8 +2,8 @@
 
 namespace Silktide\ProspectClient\UnitTest\ApiRequest;
 
-use Silktide\ProspectClient\ApiRequest\ReanalyzeReportApiRequest;
-use Silktide\ProspectClient\ApiRequest\ReportIdNotSetException;
+use Silktide\ProspectClient\Request\ReanalyzeReportRequest;
+use Silktide\ProspectClient\Request\ReportIdNotSetException;
 
 class ReanalyzeReportApiRequestRequestTest extends HttpRequestTestCase
 {
@@ -11,7 +11,7 @@ class ReanalyzeReportApiRequestRequestTest extends HttpRequestTestCase
     {
         $id = uniqid("id-");
         $httpWrapper = self::getReanalyzeMockHttpWrapper($id);
-        $sut = new ReanalyzeReportApiRequest($httpWrapper);
+        $sut = new ReanalyzeReportRequest($httpWrapper);
         $sut->setId($id);
         $sut->execute();
     }
@@ -27,7 +27,7 @@ class ReanalyzeReportApiRequestRequestTest extends HttpRequestTestCase
                 "_$key" => $value,
             ]
         );
-        $sut = new ReanalyzeReportApiRequest($httpWrapper);
+        $sut = new ReanalyzeReportRequest($httpWrapper);
         $sut->setId($id);
         $sut->setCustomField($key, $value);
         $sut->execute();
@@ -43,7 +43,7 @@ class ReanalyzeReportApiRequestRequestTest extends HttpRequestTestCase
                 "on_completion" => $webhook,
             ]
         );
-        $sut = new ReanalyzeReportApiRequest($httpWrapper);
+        $sut = new ReanalyzeReportRequest($httpWrapper);
         $sut->setId($id);
         $sut->setCompletionWebhook($webhook);
         $sut->execute();
@@ -52,7 +52,7 @@ class ReanalyzeReportApiRequestRequestTest extends HttpRequestTestCase
     public function testExecuteNoId()
     {
         $httpWrapper = self::getReanalyzeMockHttpWrapper(null);
-        $sut = new ReanalyzeReportApiRequest($httpWrapper);
+        $sut = new ReanalyzeReportRequest($httpWrapper);
         self::expectException(ReportIdNotSetException::class);
         $sut->execute();
     }

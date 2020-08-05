@@ -4,7 +4,7 @@ namespace Silktide\ProspectClient\UnitTest\ApiRequest;
 
 use DateTime;
 use DateTimeInterface;
-use Silktide\ProspectClient\ApiRequest\CreateReportApiRequest;
+use Silktide\ProspectClient\Request\CreateReportRequest;
 
 class CreateReportApiRequestRequestTest extends HttpRequestTestCase
 {
@@ -17,7 +17,7 @@ class CreateReportApiRequestRequestTest extends HttpRequestTestCase
             ]
         );
 
-        $sut = new CreateReportApiRequest($httpWrapper);
+        $sut = new CreateReportRequest($httpWrapper);
         $sut->setUrl($url);
         $sut->execute();
     }
@@ -33,7 +33,7 @@ class CreateReportApiRequestRequestTest extends HttpRequestTestCase
             ]
         );
 
-        $sut = new CreateReportApiRequest($httpWrapper);
+        $sut = new CreateReportRequest($httpWrapper);
         $sut->setCustomField($key, $value);
         $sut->execute();
     }
@@ -48,7 +48,7 @@ class CreateReportApiRequestRequestTest extends HttpRequestTestCase
             ]
         );
 
-        $sut = new CreateReportApiRequest($httpWrapper);
+        $sut = new CreateReportRequest($httpWrapper);
         $sut->setCheckForExisting($dateTime);
         $sut->execute();
     }
@@ -63,7 +63,7 @@ class CreateReportApiRequestRequestTest extends HttpRequestTestCase
             ]
         );
 
-        $sut = new CreateReportApiRequest($httpWrapper);
+        $sut = new CreateReportRequest($httpWrapper);
         $sut->setCompletionWebhook($uri);
         $sut->execute();
     }
@@ -76,7 +76,7 @@ class CreateReportApiRequestRequestTest extends HttpRequestTestCase
                 "name" => $name
             ]
         );
-        $sut = new CreateReportApiRequest($httpWrapper);
+        $sut = new CreateReportRequest($httpWrapper);
         $sut->setName($name);
         $sut->execute();
     }
@@ -89,7 +89,7 @@ class CreateReportApiRequestRequestTest extends HttpRequestTestCase
                 "phone" => $phone,
             ]
         );
-        $sut = new CreateReportApiRequest($httpWrapper);
+        $sut = new CreateReportRequest($httpWrapper);
         $sut->setPhone($phone);
         $sut->execute();
     }
@@ -106,7 +106,7 @@ class CreateReportApiRequestRequestTest extends HttpRequestTestCase
             "country_code" => uniqid("country-code-"),
         ];
         $httpWrapper = self::getCreateMockHttpWrapper($address);
-        $sut = new CreateReportApiRequest($httpWrapper);
+        $sut = new CreateReportRequest($httpWrapper);
         $sut->setAddress(
             $address["address"],
             $address["number"],
@@ -129,7 +129,7 @@ class CreateReportApiRequestRequestTest extends HttpRequestTestCase
                 "lng" => $lng,
             ]
         );
-        $sut = new CreateReportApiRequest($httpWrapper);
+        $sut = new CreateReportRequest($httpWrapper);
         $sut->setLatLng($lat, $lng);
         $sut->execute();
     }
@@ -146,8 +146,8 @@ class CreateReportApiRequestRequestTest extends HttpRequestTestCase
                 "products" => implode(",", $products),
             ]
         );
-        $sut = new CreateReportApiRequest($httpWrapper);
-        $sut->setProducts(...$products);
+        $sut = new CreateReportRequest($httpWrapper);
+        $sut->setProducts($products);
         $sut->execute();
     }
 
@@ -163,7 +163,7 @@ class CreateReportApiRequestRequestTest extends HttpRequestTestCase
                 "locations" => implode(",", $locations),
             ]
         );
-        $sut = new CreateReportApiRequest($httpWrapper);
+        $sut = new CreateReportRequest($httpWrapper);
         $sut->setLocations(...$locations);
         $sut->execute();
     }

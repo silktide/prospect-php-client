@@ -1,22 +1,19 @@
 <?php
-namespace Silktide\ProspectClient\ApiRequest;
+namespace Silktide\ProspectClient\Request;
 
 use DateTimeInterface;
-use Silktide\ProspectClient\ApiResponse\CreateReportApiResponse;
-use Silktide\ProspectClient\ApiResponse\AbstractApiResponse;
+use Silktide\ProspectClient\Response\CreateReportResponse;
 
-class CreateReportApiRequest extends AbstractApiRequest
+class CreateReportRequest extends AbstractRequest
 {
-    /** @var string */
-    protected $apiPath = "report";
-    /** @var string */
-    protected $apiMethod = "POST";
+    protected string $method = "POST";
+    protected string $path = "report";
 
-    /** @return CreateReportApiResponse */
-    public function execute(): AbstractApiResponse
+    public function execute(): CreateReportResponse
     {
-        $httpResponse = $this->makeHttpRequest();
-        return new CreateReportApiResponse($httpResponse);
+        return new CreateReportResponse(
+            $this->httpWrapper->execute($this)
+        );
     }
 
     public function setUrl(string $url): self
@@ -25,7 +22,13 @@ class CreateReportApiRequest extends AbstractApiRequest
         return $this;
     }
 
-    /** Pass values to set as one of your custom report fields. */
+    /**
+     * Pass values to set as one of your custom report fields.
+     *
+     * @param string $key
+     * @param string $value
+     * @return $this
+     */
     public function setCustomField(string $key, string $value): self
     {
         if ($key[0] !== "_") {
@@ -36,7 +39,12 @@ class CreateReportApiRequest extends AbstractApiRequest
         return $this;
     }
 
-    /** The analysis will not run if the website has already been tested after the supplied date. */
+    /**
+     * The analysis will not run if the website has already been tested after the supplied date
+     *
+     * @param DateTimeInterface $since
+     * @return $this
+     */
     public function setCheckForExisting(DateTimeInterface $since): self
     {
         $this->body["check_for_existing"] = $since->format(DateTimeInterface::ATOM);
@@ -44,8 +52,10 @@ class CreateReportApiRequest extends AbstractApiRequest
     }
 
     /**
-     * Silktide Prospect will make a POST callback to this URL with the JSON report data.
+     * Prospect will make a POST callback to this URL with the JSON report data.
+     *
      * @param string $uri
+     * @return $this
      */
     public function setCompletionWebhook(string $uri): self
     {
@@ -53,14 +63,23 @@ class CreateReportApiRequest extends AbstractApiRequest
         return $this;
     }
 
-    /** Business name, some checks will not work without this, e.g Local presence, Reviews. */
+    /**
+     * Business name, some checks will not work without this, e.g Local presence, Reviews.
+     *
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->body["name"] = $name;
         return $this;
     }
 
-    /** Business phone number, some checks will not work without this, e.g Local presence, Reviews. */
+    /**
+     * Business phone number, some checks will not work without this, e.g Local presence, Reviews.
+     * @param string $phone
+     * @return $this
+     */
     public function setPhone(string $phone): self
     {
         $this->body["phone"] = $phone;
@@ -68,13 +87,14 @@ class CreateReportApiRequest extends AbstractApiRequest
     }
 
     /**
-     * @param string $firstLine First line of business address, some checks will not work without this, e.g Local presence, Reviews
-     * @param string $buildingNameOrNumber Building number, enhances accuracy in some checks, e.g Local presence, Reviews
-     * @param string $street Street, enhances accuracy in some checks, e.g Local presence, Reviews
-     * @param string $city City, enhances accuracy in some checks, e.g Local presence, Reviews
-     * @param string $stateOrCounty State or county, enhances accuracy in some checks, e.g Local presence, Reviews
-     * @param string $zipOrPostcode Zip or postcode, enhances accuracy in some checks, e.g Local presence, Reviews
-     * @param string $countryCode ISO 2 letter code – Country, enhances accuracy in some checks, e.g Local presence, Reviews
+     * @param string $firstLine - First line of business address, some checks will not work without this, e.g Local presence, Reviews
+     * @param string $buildingNameOrNumber - Building number, enhances accuracy in some checks, e.g Local presence, Reviews
+     * @param string $street - Street, enhances accuracy in some checks, e.g Local presence, Reviews
+     * @param string $city - City, enhances accuracy in some checks, e.g Local presence, Reviews
+     * @param string $stateOrCounty - State or county, enhances accuracy in some checks, e.g Local presence, Reviews
+     * @param string $zipOrPostcode - Zip or postcode, enhances accuracy in some checks, e.g Local presence, Reviews
+     * @param string $countryCode - ISO 2 letter code – Country, enhances accuracy in some checks, e.g Local presence, Reviews
+     * @return $this
      */
     public function setAddress(
         string $firstLine = "",
@@ -109,7 +129,13 @@ class CreateReportApiRequest extends AbstractApiRequest
         return $this;
     }
 
-    /** Latitude and longitude, enhances accuracy in some checks, e.g Local presence, Reviews. */
+    /**
+     * Latitude and longitude, enhances accuracy in some checks, e.g Local presence, Reviews.
+     *
+     * @param float $lat
+     * @param float $lon
+     * @return $this
+     */
     public function setLatLng(float $lat, float $lon): self
     {
         $this->body["lat"] = $lat;
@@ -119,9 +145,9 @@ class CreateReportApiRequest extends AbstractApiRequest
 
     /**
      * Products and services this business offers, some checks will not work without this, e.g Content keywords.
-     * @param string ...$products Individual products and services passed as variable arguments
+     * @param array $products Individual products and services passed as variable arguments
      */
-    public function setProducts(string...$products): self
+    public function setProducts(array $products = []): self
     {
         $this->body["products"] = implode(",", $products);
         return $this;
@@ -129,9 +155,9 @@ class CreateReportApiRequest extends AbstractApiRequest
 
     /**
      * Locations served, some checks will not work without this, e.g Content keywords.
-     * @param string ...$locations Individual locations passed as variable arguments
+     * @param array $locations Individual locations passed as variable arguments
      */
-    public function setLocations(string...$locations): self
+    public function setLocations(array $locations): self
     {
         $this->body["locations"] = implode(",", $locations);
         return $this;

@@ -3,7 +3,7 @@
 namespace Silktide\ProspectClient\UnitTest\ApiResponse;
 
 use Silktide\ProspectClient\ApiException\ReportNotFoundException;
-use Silktide\ProspectClient\ApiResponse\FetchReportApiResponse;
+use Silktide\ProspectClient\Response\FetchReportResponse;
 use Silktide\ProspectClient\Entity\Report;
 
 class FetchReportApiResponseTest extends HttpResponseTestCase
@@ -17,7 +17,7 @@ class FetchReportApiResponseTest extends HttpResponseTestCase
                 "report" => ["testKey" => "testValue"],
             ]
         );
-        $sut = new FetchReportApiResponse($httpResponse);
+        $sut = new FetchReportResponse($httpResponse);
         self::assertInstanceOf(Report::class, $sut->getReport());
     }
 
@@ -25,7 +25,7 @@ class FetchReportApiResponseTest extends HttpResponseTestCase
     {
         $httpResponse = self::getMockHttpResponse(null, 404);
         self::expectException(ReportNotFoundException::class);
-        new FetchReportApiResponse($httpResponse);
+        new FetchReportResponse($httpResponse);
     }
 
     public function testGetReportId()
@@ -36,7 +36,7 @@ class FetchReportApiResponseTest extends HttpResponseTestCase
                 "reportId" => $id,
             ]
         );
-        $sut = new FetchReportApiResponse($httpResponse);
+        $sut = new FetchReportResponse($httpResponse);
         self::assertEquals($id, $sut->getReportId());
     }
 }

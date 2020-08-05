@@ -5,7 +5,7 @@ namespace Silktide\ProspectClient\UnitTest\ApiResponse;
 use Silktide\ProspectClient\ApiException\ReportAlreadyExistsException;
 use Silktide\ProspectClient\ApiException\ReportPathDoesNotExistException;
 use Silktide\ProspectClient\ApiException\ReportPathUnprocessableException;
-use Silktide\ProspectClient\ApiResponse\CreateReportApiResponse;
+use Silktide\ProspectClient\Response\CreateReportResponse;
 
 class CreateReportApiResponseTest extends HttpResponseTestCase
 {
@@ -13,20 +13,20 @@ class CreateReportApiResponseTest extends HttpResponseTestCase
     {
         $httpResponse = self::getMockHttpResponse(null, 303);
         self::expectException(ReportAlreadyExistsException::class);
-        new CreateReportApiResponse($httpResponse);
+        new CreateReportResponse($httpResponse);
     }
 
     public function testReportPathUnprocessable()
     {
         $httpResponse = self::getMockHttpResponse(null, 400);
         self::expectException(ReportPathUnprocessableException::class);
-        new CreateReportApiResponse($httpResponse);
+        new CreateReportResponse($httpResponse);
     }
 
     public function testReportPathDoesNotExist()
     {
         $httpResponse = self::getMockHttpResponse(null, 422);
         self::expectException(ReportPathDoesNotExistException::class);
-        new CreateReportApiResponse($httpResponse);
+        new CreateReportResponse($httpResponse);
     }
 }

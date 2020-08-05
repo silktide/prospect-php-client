@@ -3,8 +3,8 @@
 namespace Silktide\ProspectClient\UnitTest\ApiRequest;
 
 use Silktide\ProspectClient\ApiException\ReportStillRunningException;
-use Silktide\ProspectClient\ApiRequest\FetchReportApiRequest;
-use Silktide\ProspectClient\ApiRequest\ReportIdNotSetException;
+use Silktide\ProspectClient\Request\FetchReportRequest;
+use Silktide\ProspectClient\Request\ReportIdNotSetException;
 
 class FetchReportApiRequestTest extends HttpRequestTestCase
 {
@@ -16,7 +16,7 @@ class FetchReportApiRequestTest extends HttpRequestTestCase
             "GET",
             ["categories" => "true"]
         );
-        $sut = new FetchReportApiRequest($httpWrapper);
+        $sut = new FetchReportRequest($httpWrapper);
         $sut->setId($id);
         $sut->execute();
     }
@@ -24,7 +24,7 @@ class FetchReportApiRequestTest extends HttpRequestTestCase
     public function testExecuteNoId()
     {
         $httpWrapper = self::getMockHttpWrapper();
-        $sut = new FetchReportApiRequest($httpWrapper);
+        $sut = new FetchReportRequest($httpWrapper);
         self::expectException(ReportIdNotSetException::class);
         $sut->execute();
     }
