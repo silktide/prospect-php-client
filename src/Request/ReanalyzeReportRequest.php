@@ -2,6 +2,7 @@
 
 namespace Silktide\ProspectClient\Request;
 
+use Silktide\ProspectClient\Http\HttpWrapper;
 use Silktide\ProspectClient\Response\ReanalyzeReportResponse;
 
 class ReanalyzeReportRequest extends AbstractRequest
@@ -9,7 +10,13 @@ class ReanalyzeReportRequest extends AbstractRequest
     protected string $path = "report";
     protected string $method = "post";
 
-    private string $id;
+    private string $reportId;
+
+    public function __construct(HttpWrapper $httpWrapper, string $reportId)
+    {
+        parent::__construct($httpWrapper);
+        $this->reportId = $reportId;
+    }
 
     public function execute(): ReanalyzeReportResponse
     {
@@ -20,13 +27,7 @@ class ReanalyzeReportRequest extends AbstractRequest
 
     public function getPath(): string
     {
-        return $this->path . "/" . $this->id;
-    }
-
-    public function setId(string $reportId): self
-    {
-        $this->id = $reportId;
-        return $this;
+        return $this->path . "/" . $this->reportId;
     }
 
     /**

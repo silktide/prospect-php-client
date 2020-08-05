@@ -23,18 +23,18 @@ class ReportApi
         return new CreateReportRequest($this->httpWrapper);
     }
 
-    public function reanalyze(): ReanalyzeReportRequest
+    public function fetch(string $reportId): FetchReportRequest
     {
-        return new ReanalyzeReportRequest($this->httpWrapper);
+        return new FetchReportRequest($this->httpWrapper, $reportId);
+    }
+
+    public function reanalyze(string $reportId): ReanalyzeReportRequest
+    {
+        return new ReanalyzeReportRequest($this->httpWrapper, $reportId);
     }
 
     public function search(): SearchReportRequest
     {
         return new SearchReportRequest($this->httpWrapper);
-    }
-
-    public function fetch(): FetchReportRequest
-    {
-        return new FetchReportRequest($this->httpWrapper);
     }
 }
