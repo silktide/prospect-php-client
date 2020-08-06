@@ -14,16 +14,16 @@ class SearchReportResponse extends AbstractResponse
      */
     private array $reports = [];
 
-    public function __construct(ResponseInterface $httpResponse)
+    public function __construct(array $response)
     {
-        parent::__construct($httpResponse);
+        parent::__construct($response);
         foreach ($this->response["reports"] as $array) {
             $this->reports[] = Report::create($array);
         }
     }
 
     /**
-     * @return array<Report>
+     * @return Report[]
      */
     public function getReports() : array
     {

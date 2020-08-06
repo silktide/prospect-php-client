@@ -11,9 +11,6 @@ abstract class AbstractRequest
     protected string $method = "get";
     protected string $path = "";
 
-    /**
-     * @var array<string,string>
-     */
     protected array $queryParams = [];
     protected array $body = [];
 
@@ -39,15 +36,10 @@ abstract class AbstractRequest
         return $this->queryParams;
     }
 
-    public function getBody()
+    public function getBody() : array
     {
         return $this->body;
     }
 
     abstract public function execute() : AbstractResponse;
-
-    private function run() : ResponseInterface
-    {
-        return $this->httpWrapper->execute($this);
-    }
 }

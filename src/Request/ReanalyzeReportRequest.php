@@ -2,13 +2,14 @@
 
 namespace Silktide\ProspectClient\Request;
 
+use Silktide\ProspectClient\Exception\Api\ReportNotFoundException;
 use Silktide\ProspectClient\Http\HttpWrapper;
 use Silktide\ProspectClient\Response\ReanalyzeReportResponse;
 
 class ReanalyzeReportRequest extends AbstractRequest
 {
+    protected string $method = "POST";
     protected string $path = "report";
-    protected string $method = "post";
 
     private string $reportId;
 
@@ -16,13 +17,6 @@ class ReanalyzeReportRequest extends AbstractRequest
     {
         parent::__construct($httpWrapper);
         $this->reportId = $reportId;
-    }
-
-    public function execute(): ReanalyzeReportResponse
-    {
-        return new ReanalyzeReportResponse(
-            $this->httpWrapper->execute($this)
-        );
     }
 
     public function getPath(): string
@@ -55,5 +49,17 @@ class ReanalyzeReportRequest extends AbstractRequest
     {
         $this->body["on_completion"] = $uri;
         return $this;
+    }
+
+    public function execute(): ReanalyzeReportResponse
+    {
+        $httpResponse = $this->httpWrapper->execute($this);
+        $response = $httpResponse->getResponse();
+
+        if ($httpResponse->getStatusCode() === 404) {
+            throw new ReportNotFoundException($response["errorMessage"] ?? "Report not found");
+        }
+
+        return new ReanalyzeReportResponse($httpResponse->getResponse());
     }
 }

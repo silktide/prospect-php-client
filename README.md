@@ -7,7 +7,8 @@ Example usage
 ### Create a new report, poll for it to be completed, then display the report
 
 ```php
-use Silktide\ProspectClient\Api\ReportApi;use Silktide\ProspectClient\ApiException\ReportStillRunningException;
+use Silktide\ProspectClient\Api\ReportApi;
+use Silktide\ProspectClient\Exception\Api\ReportStillRunningException;
 
 // Keys can be loaded from the environment or passed to your script. 
 // The actual API key needs to be created at https://app.prospect.silktide.com/en_GB/admin/settings#/api

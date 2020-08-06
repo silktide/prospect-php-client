@@ -9,11 +9,7 @@ class FetchReportResponse extends ReportResponse
 {
     public function getReport(): Report
     {
-        return Report::create(
-            $this->response['report'],
-            $this->response['status'],
-            $this->response['report_status']
-        );
+        return Report::create($this->response['report']);
     }
 
     /**

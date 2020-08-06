@@ -3,14 +3,15 @@ namespace Silktide\ProspectClient\Http;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 use Silktide\ProspectClient\Request\AbstractRequest;
 
 class HttpWrapper
 {
-    const API_SCHEME = "https";
-    const API_HOST = "api.prospect.silktide.com";
-    const API_PATH_VERSION = "/api/v1";
+    protected string $scheme = "https";
+    protected string $host = "api.prospect.silktide.com";
+    protected string $pathVersion = "/api/v1/";
 
     private string $apiKey;
     private GuzzleClient $guzzle;
@@ -21,46 +22,49 @@ class HttpWrapper
         $this->guzzle = $guzzle ?? new GuzzleClient();
     }
 
-    public function execute(AbstractRequest $request) : ResponseInterface
+    public function execute(AbstractRequest $request) : HttpResponse
     {
         return $this->makeRequest(
-            $request->getPath(),
             $request->getMethod(),
+            $request->getPath(),
             $request->getQueryParams(),
             $request->getBody()
         );
     }
 
-    private function makeRequest(string $endpointPath = "/", string $method = "get", array $query = [], array $body = []) : ResponseInterface
+    public function setHost(string $host) : void
+    {
+        $this->host = $host;
+    }
+
+    private function makeRequest(string $method = "get", string $path = "", array $query = [], array $body = []) : HttpResponse
     {
         $uri = (new Uri())
-            ->withScheme(self::API_SCHEME)
-            ->withHost(self::API_HOST)
-            ->withPath(
-                implode("/", [
-                    static::API_PATH_VERSION,
-                    ($endpointPath === "/" ? "" : $endpointPath),
-                ])
-            );
+            ->withScheme($this->scheme)
+            ->withHost($this->host)
+            ->withPath($this->pathVersion . $path);
 
         $uri = (string)$uri;
 
         $options = [
-            "headers" => [
+            RequestOptions::HEADERS => [
                 "api-key" => $this->apiKey,
                 "content-type" => "application/json",
             ],
-            "query" => $query
+            RequestOptions::QUERY => $query,
+            RequestOptions::HTTP_ERRORS => false
         ];
 
         if (count($body) > 0) {
-            $options["body"] = json_encode($body);
+            $options[RequestOptions::BODY] = json_encode($body);
         }
 
-        return $this->guzzle->request(
-            strtoupper($method),
-            trim($uri, "/"),
-            $options
+        return new HttpResponse(
+            $this->guzzle->request(
+                strtoupper($method),
+                trim($uri, "/"),
+                $options
+            )
         );
     }
 }
