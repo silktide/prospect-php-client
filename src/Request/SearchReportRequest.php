@@ -2,6 +2,7 @@
 
 namespace Silktide\ProspectClient\Request;
 
+use Silktide\ProspectClient\Exception\Api\InvalidRequestException;
 use Silktide\ProspectClient\Response\SearchReportResponse;
 use function GuzzleHttp\json_encode;
 
@@ -46,21 +47,6 @@ class SearchReportRequest extends AbstractRequest
      */
     private array $orderBy = [];
 
-    public function execute(): SearchReportResponse
-    {
-        if (!empty($this->orderBy)) {
-            $this->queryParams["order"] = json_encode($this->orderBy);
-        }
-
-        if (!empty($this->filter)) {
-            $this->queryParams["filter"] = json_encode($this->filter);
-        }
-
-        return new SearchReportResponse(
-            $this->httpWrapper->execute($this)
-        );
-    }
-
     public function addFilter(string $property, string $operator, string $value): self
     {
         $this->filter[] = [
@@ -79,5 +65,25 @@ class SearchReportRequest extends AbstractRequest
         ];
 
         return $this;
+    }
+
+    public function execute(): SearchReportResponse
+    {
+        if (!empty($this->orderBy)) {
+            $this->queryParams["order"] = json_encode($this->orderBy);
+        }
+
+        if (!empty($this->filter)) {
+            $this->queryParams["filter"] = json_encode($this->filter);
+        }
+
+        $httpResponse = $this->httpWrapper->execute($this);
+        $response = $httpResponse->getResponse();
+
+        if ($httpResponse->getStatusCode() === 400) {
+            throw new InvalidRequestException($response['errorMessage'] ?? "Invalid request");
+        }
+
+        return new SearchReportResponse($response);
     }
 }

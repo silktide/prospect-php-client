@@ -14,9 +14,13 @@ abstract class AbstractResponse
      */
     protected array $response = [];
 
-    public function __construct(ResponseInterface $httpResponse)
+    public function __construct(array $response)
     {
-        $this->httpResponse = $httpResponse;
-        $this->response = json_decode($httpResponse->getBody()->getContents(), true);
+        $this->response = $response;
+    }
+
+    public function getRequestStatus() : string
+    {
+        return $this->response['status'] ?? 'unknown';
     }
 }

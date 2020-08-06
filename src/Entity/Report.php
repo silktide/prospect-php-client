@@ -2,33 +2,19 @@
 
 namespace Silktide\ProspectClient\Entity;
 
-class Report// extends AbstractEntity
+class Report
 {
-    private $status;
-    private $reportStatus;
-    private $data;
+    private array $data;
 
     private function __construct()
     {
     }
 
-    public static function create(array $data, string $status, string $reportStatus)
+    public static function create(array $data) : Report
     {
         $report = new Report();
         $report->data = $data;
-        $report->status = $status;
-        $report->reportStatus = $reportStatus;
         return $report;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function getReportStatus(): string
-    {
-        return $this->reportStatus;
     }
 
     public function getId(): string
@@ -61,7 +47,7 @@ class Report// extends AbstractEntity
             return null;
         }
 
-        return $this->jsonData[$name] ?? null;
+        return $this->data[$name] ?? null;
     }
 
     public function getAllReportSections(): array
@@ -85,11 +71,15 @@ class Report// extends AbstractEntity
 
     public function getMetaValue(string $key): ?string
     {
-        return $this->jsonData["meta"][$key] ?? null;
+        return $this->data["meta"][$key] ?? null;
     }
 
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
     public function getValue(string $key)
     {
-        return $this->jsonData[$key] ?? null;
+        return $this->data[$key] ?? null;
     }
 }

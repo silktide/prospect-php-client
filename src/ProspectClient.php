@@ -13,7 +13,7 @@ class ProspectClient
         $this->httpWrapper = $httpWrapper ?? new HttpWrapper($apiKey);
     }
 
-    public function getReportApi():ReportApi
+    public function getReportApi(): ReportApi
     {
         return new ReportApi($this->httpWrapper);
     }

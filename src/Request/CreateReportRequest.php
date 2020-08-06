@@ -2,6 +2,10 @@
 namespace Silktide\ProspectClient\Request;
 
 use DateTimeInterface;
+use Silktide\ProspectClient\Exception\Api\ReportAlreadyExistsException;
+use Silktide\ProspectClient\Exception\Api\ReportNotFoundException;
+use Silktide\ProspectClient\Exception\Api\ReportPathDoesNotExistException;
+use Silktide\ProspectClient\Exception\Api\ReportUnprocessableException;
 use Silktide\ProspectClient\Response\CreateReportResponse;
 
 class CreateReportRequest extends AbstractRequest
@@ -9,12 +13,6 @@ class CreateReportRequest extends AbstractRequest
     protected string $method = "POST";
     protected string $path = "report";
 
-    public function execute(): CreateReportResponse
-    {
-        return new CreateReportResponse(
-            $this->httpWrapper->execute($this)
-        );
-    }
 
     public function setUrl(string $url): self
     {
@@ -145,7 +143,8 @@ class CreateReportRequest extends AbstractRequest
 
     /**
      * Products and services this business offers, some checks will not work without this, e.g Content keywords.
-     * @param array $products Individual products and services passed as variable arguments
+     * @param array<string> $products - Individual products and services passed as variable arguments
+     * @return $this
      */
     public function setProducts(array $products = []): self
     {
@@ -155,11 +154,47 @@ class CreateReportRequest extends AbstractRequest
 
     /**
      * Locations served, some checks will not work without this, e.g Content keywords.
-     * @param array $locations Individual locations passed as variable arguments
+     * @param array<string> $locations - Individual locations passed as variable arguments
+     * @return $this
      */
     public function setLocations(array $locations): self
     {
         $this->body["locations"] = implode(",", $locations);
         return $this;
     }
+
+    public function execute(): CreateReportResponse
+    {
+        $httpResponse = $this->httpWrapper->execute($this);
+        $response = $httpResponse->getResponse();
+
+        switch ($httpResponse->getStatusCode()) {
+            case 202:
+                // Report has been requested and is now running
+                break;
+
+            case 303:
+                // Recent results already exist for this business so it won't be retested
+                $exception = new ReportAlreadyExistsException();
+                $exception->setReportId($response['reportId']);
+                $exception->setResolvedUrl($response['resolved_url'] ?? null);
+                throw $exception;
+                break;
+
+            case 400:
+                // Request was un-processable, usually because you’ve requested analysis on a website with a path, which we can’t currently accept.
+                $exception = new ReportUnprocessableException($response["errorMessage"] ?? "Unprocessable request");
+                $exception->setIssue($response["issue"] ?? null);
+                throw $exception;
+
+            case 422:
+                // Request was un-processable, usually because the website doesn’t exist or redirects
+                $exception = new ReportUnprocessableException($response["errorMessage"] ?? "Unprocessable request");
+                $exception->setIssue($response["issue"] ?? null);
+                throw $exception;
+        }
+
+        return new CreateReportResponse($response);
+    }
+
 }

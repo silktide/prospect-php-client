@@ -12,7 +12,7 @@ class ReportCategory
     {
     }
 
-    public static function create(string $label, float $score, array $sections)
+    public static function create(string $label, float $score, array $sections) : ReportCategory
     {
         $reportCategory = new ReportCategory();
         $reportCategory->label = $label;
@@ -34,6 +34,6 @@ class ReportCategory
     /** @return string[] */
     public function getSections(): array
     {
-        $this->sections;
+        return $this->sections;
     }
 }
