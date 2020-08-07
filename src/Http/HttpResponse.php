@@ -23,8 +23,8 @@ class HttpResponse
 
         if ($this->httpResponse->getStatusCode() === 500) {
             $message = "Prospect server error";
-            if (isset($response["errorMessage"])) {
-                $message .= ":" . $response["errorMessage"];
+            if (isset($response["error_message"])) {
+                $message .= ": " . $response["error_message"];
             }
             throw new InvalidServerResponseException($message);
         }

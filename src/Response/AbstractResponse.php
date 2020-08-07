@@ -22,6 +22,6 @@ abstract class AbstractResponse
      */
     public function getRequestStatus() : ?string
     {
-        return $this->response['requestStatus'] ?? null;
+        return $this->response['request_status'] ?? null;
     }
 }
