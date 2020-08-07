@@ -19,8 +19,11 @@ abstract class AbstractResponse
         $this->response = $response;
     }
 
-    public function getRequestStatus() : string
+    /**
+     * @return string|null
+     */
+    public function getRequestStatus() : ?string
     {
-        return $this->response['status'] ?? 'unknown';
+        return $this->response['requestStatus'] ?? null;
     }
 }

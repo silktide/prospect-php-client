@@ -26,14 +26,33 @@ class FetchReportRequest extends AbstractRequest
         return $this->path . "/" . $this->reportId;
     }
 
-    public function includeDatasets(bool $include = true): self
+    public function includeDatasets(): self
     {
-        unset($this->queryParams["include_datasets"]);
+        $this->queryParams["include_datasets"] = 1;
+        return $this;
+    }
 
-        if ($include) {
-            $this->queryParams["include_datasets"] = "true";
-        }
+    public function includeDetail(): self
+    {
+        $this->queryParams["include_detail_data"] = 1;
+        return $this;
+    }
 
+    public function includeCategories(): self
+    {
+        $this->queryParams["categories"] = 1;
+        return $this;
+    }
+
+    public function includePercentiles(): self
+    {
+        $this->queryParams["percentiles"] = 1;
+        return $this;
+    }
+
+    public function includeAvailableVersions(): self
+    {
+        $this->queryParams["available_versions"] = 1;
         return $this;
     }
 
