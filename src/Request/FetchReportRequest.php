@@ -26,6 +26,11 @@ class FetchReportRequest extends AbstractRequest
         return $this->path . "/" . $this->reportId;
     }
 
+    public function setLocale(string $locale)
+    {
+        $this->queryParams["locale"] = $locale;
+    }
+
     public function includeDatasets(): self
     {
         $this->queryParams["include_datasets"] = 1;
