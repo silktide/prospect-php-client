@@ -4,12 +4,12 @@ namespace Silktide\ProspectClient\Response;
 
 class CreateReportResponse extends AbstractResponse
 {
-    public function getReportId()
+    public function getReportId(): string
     {
         return $this->response['report_id'];
     }
 
-    public function getReportStatus()
+    public function getReportStatus(): string
     {
         return $this->response['report_status'];
     }

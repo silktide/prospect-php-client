@@ -179,7 +179,6 @@ class CreateReportRequest extends AbstractRequest
                 $exception->setReportId($response['reportId']);
                 $exception->setResolvedUrl($response['resolved_url'] ?? null);
                 throw $exception;
-                break;
 
             case 400:
                 // Request was un-processable, usually because you’ve requested analysis on a website with a path, which we can’t currently accept.

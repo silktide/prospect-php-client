@@ -6,14 +6,14 @@ use Silktide\ProspectClient\Exception\ProspectClientException;
 
 class ReportUnprocessableException extends ProspectClientException
 {
-    private ?string $issue;
+    private ?string $issue = null;
 
-    public function setIssue(?string $issue)
+    public function setIssue(?string $issue) : void
     {
         $this->issue = $issue;
     }
 
-    public function getIssue()
+    public function getIssue() : ?string
     {
         return $this->issue;
     }
