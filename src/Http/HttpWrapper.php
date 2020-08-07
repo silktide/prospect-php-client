@@ -4,7 +4,6 @@ namespace Silktide\ProspectClient\Http;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\RequestOptions;
-use Psr\Http\Message\ResponseInterface;
 use Silktide\ProspectClient\Request\AbstractRequest;
 
 class HttpWrapper
