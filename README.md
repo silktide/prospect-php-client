@@ -1,4 +1,4 @@
-PHP client for integrating Prospect into your projects.
+Prospect PHP Client
 =======================================================
 
 Example usage
