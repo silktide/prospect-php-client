@@ -61,7 +61,7 @@ class ReportPercentile
         float $average,
         int $count,
         int $percentile
-    )
+    ) : ReportPercentile
     {
         $entity = new ReportPercentile();
         $entity->type = $type;
