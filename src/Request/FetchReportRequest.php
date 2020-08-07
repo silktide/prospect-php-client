@@ -32,9 +32,9 @@ class FetchReportRequest extends AbstractRequest
         return $this;
     }
 
-    public function includeDetail(): self
+    public function includeText(): self
     {
-        $this->queryParams["include_detail_data"] = 1;
+        $this->queryParams["include_text"] = 1;
         return $this;
     }
 
