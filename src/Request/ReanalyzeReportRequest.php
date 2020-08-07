@@ -24,13 +24,6 @@ class ReanalyzeReportRequest extends AbstractRequest
         return $this->path . "/" . $this->reportId;
     }
 
-    /**
-     * Pass values to set as one of your custom report fields.
-     *
-     * @param string $key
-     * @param string $value
-     * @return $this
-     */
     public function setCustomField(string $key, string $value): self
     {
         if ($key[0] !== "_") {
@@ -41,13 +34,13 @@ class ReanalyzeReportRequest extends AbstractRequest
     }
 
     /**
-     * Silktide Prospect will make a POST callback to this URL with the JSON report data.
-     * @param string $uri
+     * This URL will receive a POST callback with the JSON report data
+     * @param string $url
      * @return $this
      */
-    public function setCompletionWebhook(string $uri): self
+    public function setCompletionWebhook(string $url): self
     {
-        $this->body["on_completion"] = $uri;
+        $this->body["on_completion"] = $url;
         return $this;
     }
 

@@ -16,17 +16,12 @@ if (!is_string($apiKey)) {
     throw new \Exception("An API key should be specified in the ./env file to run the examples");
 }
 
-$reportId = "e69ef2c48be24356a27ff77f5d6bf5ce1678e23d9";
+$reportId = "e69ef2c48be24356a27ff77f5d6bf5ce1678e239";
 
-$prospectClient = new ProspectClient($apiKey);
+$prospectClient = ProspectClient::createFromApiKey($apiKey);
 $reportApi = $prospectClient->getReportApi();
 
 $response = $reportApi->reanalyze($reportId)
     ->execute();
 
-
-$report = $response->getReport();
-echo "Overall score: " . $report->getOverallScore() . PHP_EOL;
-
-$amountOfContentSection = $report->getReportSection("amount_of_content");
-echo "Total word count: " . $amountOfContentSection["total_word_count"] . PHP_EOL;
+echo "ReportStatus: " . $response->getReportStatus() . "\n";
