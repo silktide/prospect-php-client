@@ -13,6 +13,11 @@ class FetchReportResponse extends AbstractResponse
         return Report::create($this->response['report']);
     }
 
+    public function getReportStatus() : string
+    {
+        return $this->response['report_status'];
+    }
+
     /**
      * @return ReportCategory[]
      */

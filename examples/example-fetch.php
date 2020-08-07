@@ -16,9 +16,9 @@ if (!is_string($apiKey)) {
     throw new \Exception("An API key should be specified in the ./env file to run the examples");
 }
 
-$reportId = "e69ef2c48be24356a27ff77f5d6bf5ce1678e23d9";
+$reportId = "e69ef2c48be24356a27ff77f5d6bf5ce1678e239";
 
-$prospectClient = new ProspectClient($apiKey);
+$prospectClient = ProspectClient::createFromApiKey($apiKey);
 $reportApi = $prospectClient->getReportApi();
 
 $response = $reportApi->fetch($reportId)

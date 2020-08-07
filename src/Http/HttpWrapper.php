@@ -32,9 +32,19 @@ class HttpWrapper
         );
     }
 
-    public function setHost(string $host) : void
+    public function setEndpoint(?string $scheme = null, ?string $host = null, ?string $pathVersion = null) : void
     {
-        $this->host = $host;
+        if ($scheme !== null) {
+            $this->scheme = $scheme;
+        }
+
+        if ($host !== null) {
+            $this->host = $host;
+        }
+
+        if ($pathVersion !== null) {
+            $this->pathVersion = $pathVersion;
+        }
     }
 
     private function makeRequest(string $method = "get", string $path = "", array $query = [], array $body = []) : HttpResponse

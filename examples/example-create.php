@@ -16,7 +16,7 @@ if (!is_string($apiKey)) {
     throw new \Exception("An API key should be specified in the ./env file to run the examples");
 }
 
-$prospectClient = new ProspectClient($apiKey);
+$prospectClient = ProspectClient::createFromApiKey($apiKey);
 $reportApi = $prospectClient->getReportApi();
 
 $websiteName = "BBC";

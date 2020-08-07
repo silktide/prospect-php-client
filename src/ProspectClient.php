@@ -8,9 +8,19 @@ class ProspectClient
 {
     private HttpWrapper $httpWrapper;
 
-    public function __construct(string $apiKey, HttpWrapper $httpWrapper = null)
+    private function __construct(HttpWrapper $httpWrapper)
     {
-        $this->httpWrapper = $httpWrapper ?? new HttpWrapper($apiKey);
+        $this->httpWrapper = $httpWrapper;
+    }
+
+    public static function createFromApiKey(string $apiKey)
+    {
+        return new ProspectClient(new HttpWrapper($apiKey));
+    }
+
+    public static function createFromHttpWrapper(HttpWrapper $httpWrapper)
+    {
+        return new ProspectClient($httpWrapper);
     }
 
     public function getReportApi(): ReportApi

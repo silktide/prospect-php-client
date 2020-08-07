@@ -7,8 +7,6 @@ use function GuzzleHttp\json_decode;
 
 abstract class AbstractResponse
 {
-    protected ResponseInterface $httpResponse;
-
     /**
      * @var array<mixed>
      */
