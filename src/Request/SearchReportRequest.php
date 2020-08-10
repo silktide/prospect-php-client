@@ -81,7 +81,7 @@ class SearchReportRequest extends AbstractRequest
         $response = $httpResponse->getResponse();
 
         if ($httpResponse->getStatusCode() === 400) {
-            throw new InvalidRequestException($response['errorMessage'] ?? "Invalid request");
+            throw new InvalidRequestException($response['error_message'] ?? "Invalid request");
         }
 
         return new SearchReportResponse($response);

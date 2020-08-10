@@ -182,13 +182,13 @@ class CreateReportRequest extends AbstractRequest
 
             case 400:
                 // Request was un-processable, usually because you’ve requested analysis on a website with a path, which we can’t currently accept.
-                $exception = new ReportUnprocessableException($response["errorMessage"] ?? "Unprocessable request");
+                $exception = new ReportUnprocessableException($response["error_message"] ?? "Unprocessable request");
                 $exception->setIssue($response["issue"] ?? null);
                 throw $exception;
 
             case 422:
                 // Request was un-processable, usually because the website doesn’t exist or redirects
-                $exception = new ReportUnprocessableException($response["errorMessage"] ?? "Unprocessable request");
+                $exception = new ReportUnprocessableException($response["error_message"] ?? "Unprocessable request");
                 $exception->setIssue($response["issue"] ?? null);
                 throw $exception;
         }

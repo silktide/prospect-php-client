@@ -67,7 +67,7 @@ class FetchReportRequest extends AbstractRequest
         $httpResponse = $this->httpWrapper->execute($this);
 
         if ($httpResponse->getStatusCode() === 404) {
-            throw new ReportNotFoundException($response["errorMessage"] ?? "Report not found");
+            throw new ReportNotFoundException($response["error_message"] ?? "Report not found");
         }
 
         return new FetchReportResponse($httpResponse->getResponse());

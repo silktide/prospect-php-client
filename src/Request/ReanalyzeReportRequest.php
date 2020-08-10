@@ -50,7 +50,7 @@ class ReanalyzeReportRequest extends AbstractRequest
         $response = $httpResponse->getResponse();
 
         if ($httpResponse->getStatusCode() === 404) {
-            throw new ReportNotFoundException($response["errorMessage"] ?? "Report not found");
+            throw new ReportNotFoundException($response["error_message"] ?? "Report not found");
         }
 
         return new ReanalyzeReportResponse($httpResponse->getResponse());

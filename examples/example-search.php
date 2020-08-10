@@ -30,5 +30,5 @@ $reports = $searchResponse->getReports();
 echo "Found: " . count($reports) . " reports \n";
 
 foreach ($reports as $report) {
-    echo "ReportId: " . $report->getId() . "; Score: " . $report->getOverallScore() . "\n";
+    echo "ReportId: " . $report->getReportId() . "; Score: " . $report->getOverallScore() . "\n";
 }

@@ -17,7 +17,7 @@ class Report
         return $report;
     }
 
-    public function getId(): string
+    public function getReportId(): string
     {
         return $this->data["report_id"];
     }
