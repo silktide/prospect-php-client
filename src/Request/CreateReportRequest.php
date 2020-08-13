@@ -3,8 +3,6 @@ namespace Silktide\ProspectClient\Request;
 
 use DateTimeInterface;
 use Silktide\ProspectClient\Exception\Api\ReportAlreadyExistsException;
-use Silktide\ProspectClient\Exception\Api\ReportNotFoundException;
-use Silktide\ProspectClient\Exception\Api\ReportPathDoesNotExistException;
 use Silktide\ProspectClient\Exception\Api\ReportUnprocessableException;
 use Silktide\ProspectClient\Response\CreateReportResponse;
 
@@ -12,7 +10,6 @@ class CreateReportRequest extends AbstractRequest
 {
     protected string $method = "POST";
     protected string $path = "report";
-
 
     public function setUrl(string $url): self
     {
@@ -184,12 +181,20 @@ class CreateReportRequest extends AbstractRequest
                 // Request was un-processable, usually because you’ve requested analysis on a website with a path, which we can’t currently accept.
                 $exception = new ReportUnprocessableException($response["error_message"] ?? "Unprocessable request");
                 $exception->setIssue($response["issue"] ?? null);
+                if (isset($response["url"])) {
+                    $exception->setUrl($response["url"]);
+                    $exception->setUrlRecommended($response["recommendedUrl"] ?? false);
+                }
                 throw $exception;
 
             case 422:
                 // Request was un-processable, usually because the website doesn’t exist or redirects
                 $exception = new ReportUnprocessableException($response["error_message"] ?? "Unprocessable request");
                 $exception->setIssue($response["issue"] ?? null);
+                if (isset($response["url"])) {
+                    $exception->setUrl($response["url"]);
+                    $exception->setUrlRecommended($response["recommendedUrl"] ?? false);
+                }
                 throw $exception;
         }
 

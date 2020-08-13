@@ -35,7 +35,6 @@ class SearchReportRequest extends AbstractRequest
     const ORDER_PROPERTY_OVERALL = "overall";
 
     protected string $path = "reports";
-    protected string $method = "get";
 
     /**
      * @var array<int,array>
