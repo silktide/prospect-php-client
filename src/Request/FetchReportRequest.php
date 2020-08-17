@@ -9,9 +9,7 @@ use Silktide\ProspectClient\Response\FetchReportResponse;
 class FetchReportRequest extends AbstractRequest
 {
     protected string $path = "report";
-    protected array $queryParams = [
-        "categories" => "true"
-    ];
+    protected array $queryParams = [];
 
     private string $reportId;
 
@@ -24,12 +22,6 @@ class FetchReportRequest extends AbstractRequest
     public function getPath(): string
     {
         return $this->path . "/" . $this->reportId;
-    }
-
-    public function setLocale(string $locale): self
-    {
-        $this->queryParams["locale"] = $locale;
-        return $this;
     }
 
     public function includeDatasets(): self

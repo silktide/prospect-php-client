@@ -13,9 +13,9 @@ class ProspectClient
         $this->httpWrapper = $httpWrapper;
     }
 
-    public static function createFromApiKey(string $apiKey)
+    public static function createFromApiKey(string $apiKey, ?string $locale = null)
     {
-        return new ProspectClient(new HttpWrapper($apiKey));
+        return new ProspectClient(new HttpWrapper($apiKey, $locale));
     }
 
     public static function createFromHttpWrapper(HttpWrapper $httpWrapper)

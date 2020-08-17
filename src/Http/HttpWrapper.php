@@ -13,11 +13,13 @@ class HttpWrapper
     protected string $pathVersion = "/api/v1/";
 
     private string $apiKey;
+    private ?string $locale;
     private GuzzleClient $guzzle;
 
-    public function __construct(string $apiKey, GuzzleClient $guzzle = null)
+    public function __construct(string $apiKey, ?string $locale, GuzzleClient $guzzle = null)
     {
         $this->apiKey = $apiKey;
+        $this->locale = $locale;
         $this->guzzle = $guzzle ?? new GuzzleClient();
     }
 
@@ -54,6 +56,10 @@ class HttpWrapper
             ->withPath($this->pathVersion . $path);
 
         $uri = (string)$uri;
+
+        if ($this->locale !== null) {
+            $query = array_merge(["locale" => $this->locale], $query);
+        }
 
         $options = [
             RequestOptions::HEADERS => [
