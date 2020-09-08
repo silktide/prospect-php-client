@@ -24,7 +24,7 @@ class FetchReportResponse extends AbstractResponse
     public function getCategories(): array
     {
         $categories = [];
-        foreach($this->response["categories"] ?? [] as $row) {
+        foreach($this->response["report"]["categories"] ?? [] as $row) {
             $categories[$row["label"]] = ReportCategory::create($row["label"], $row["score"], $row["sections"]);
         }
 
