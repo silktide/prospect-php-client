@@ -1,4 +1,5 @@
 <?php
+
 namespace Silktide\ProspectClient;
 
 use Silktide\ProspectClient\Api\ReportApi;

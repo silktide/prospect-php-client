@@ -8,11 +8,7 @@ class ReportCategory
     private float $score;
     private array $sections;
 
-    private function __construct()
-    {
-    }
-
-    public static function create(string $label, float $score, array $sections) : ReportCategory
+    public static function create(string $label, float $score, array $sections): ReportCategory
     {
         $reportCategory = new ReportCategory();
         $reportCategory->label = $label;
@@ -31,7 +27,9 @@ class ReportCategory
         return $this->score;
     }
 
-    /** @return string[] */
+    /**
+     * @return string[]
+     */
     public function getSections(): array
     {
         return $this->sections;

@@ -6,11 +6,7 @@ class Report
 {
     private array $data;
 
-    private function __construct()
-    {
-    }
-
-    public static function create(array $data) : Report
+    public static function create(array $data): Report
     {
         $report = new Report();
         $report->data = $data;
@@ -19,22 +15,22 @@ class Report
 
     public function getReportId(): string
     {
-        return $this->data["report_id"];
+        return $this->data['report_id'];
     }
 
     public function getAccountId(): string
     {
-        return $this->data["account_id"];
+        return $this->data['account_id'];
     }
 
     public function getDomain(): string
     {
-        return $this->data["domain"];
+        return $this->data['domain'];
     }
 
     public function getOverallScore(): int
     {
-        return $this->data["overall_score"];
+        return $this->data['overall_score'];
     }
 
     /**
@@ -43,7 +39,7 @@ class Report
      */
     public function getReportSection(string $name): ?array
     {
-        if(!is_array($this->data)) {
+        if (!is_array($this->data)) {
             return null;
         }
 
@@ -52,26 +48,21 @@ class Report
 
     public function getAllReportSections(): array
     {
-        $skipKeys = ["meta"];
+        $skipKeys = ['meta'];
         $sections = $this->data;
 
-        $sections = array_filter($sections, function($value, $key)use($skipKeys) {
-            if(in_array($key, $skipKeys)) {
-                return false;
-            }
-            if(!is_array($value)) {
+        return array_filter($sections, function($value, $key) use ($skipKeys) {
+            if (in_array($key, $skipKeys) || !is_array($value)) {
                 return false;
             }
 
             return true;
         }, ARRAY_FILTER_USE_BOTH);
-
-        return $sections;
     }
 
     public function getMetaValue(string $key): ?string
     {
-        return $this->data["meta"][$key] ?? null;
+        return $this->data['meta'][$key] ?? null;
     }
 
     /**

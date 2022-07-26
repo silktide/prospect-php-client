@@ -2,9 +2,6 @@
 
 namespace Silktide\ProspectClient\Response;
 
-use Countable;
-use Iterator;
-use Psr\Http\Message\ResponseInterface;
 use Silktide\ProspectClient\Entity\Report;
 
 class SearchReportResponse extends AbstractResponse
@@ -15,9 +12,10 @@ class SearchReportResponse extends AbstractResponse
     public function getReports() : array
     {
         $reports = [];
-        foreach ($this->response["reports"] as $array) {
-            $reports[] = Report::create($array);
+        foreach ($this->response['reports'] as $report) {
+            $reports[] = Report::create($report);
         }
+
         return $reports;
     }
 }

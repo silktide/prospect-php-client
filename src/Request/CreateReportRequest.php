@@ -8,12 +8,12 @@ use Silktide\ProspectClient\Response\CreateReportResponse;
 
 class CreateReportRequest extends AbstractRequest
 {
-    protected string $method = "POST";
-    protected string $path = "report";
+    protected string $method = 'POST';
+    protected string $path = 'report';
 
     public function setUrl(string $url): self
     {
-        $this->body["url"] = $url;
+        $this->body['url'] = $url;
         return $this;
     }
 
@@ -26,8 +26,8 @@ class CreateReportRequest extends AbstractRequest
      */
     public function setCustomField(string $key, string $value): self
     {
-        if ($key[0] !== "_") {
-            $key = "_" . $key;
+        if ($key[0] !== '_') {
+            $key = "_$key";
         }
 
         $this->body[$key] = $value;
@@ -42,7 +42,7 @@ class CreateReportRequest extends AbstractRequest
      */
     public function setCheckForExisting(DateTimeInterface $since): self
     {
-        $this->body["check_for_existing"] = $since->format(DateTimeInterface::ATOM);
+        $this->body['check_for_existing'] = $since->format(DateTimeInterface::ATOM);
         return $this;
     }
 
@@ -54,7 +54,7 @@ class CreateReportRequest extends AbstractRequest
      */
     public function setCompletionWebhook(string $uri): self
     {
-        $this->body["on_completion"] = $uri;
+        $this->body['on_completion'] = $uri;
         return $this;
     }
 
@@ -66,7 +66,7 @@ class CreateReportRequest extends AbstractRequest
      */
     public function setName(string $name): self
     {
-        $this->body["name"] = $name;
+        $this->body['name'] = $name;
         return $this;
     }
 
@@ -77,7 +77,7 @@ class CreateReportRequest extends AbstractRequest
      */
     public function setPhone(string $phone): self
     {
-        $this->body["phone"] = $phone;
+        $this->body['phone'] = $phone;
         return $this;
     }
 
@@ -92,34 +92,34 @@ class CreateReportRequest extends AbstractRequest
      * @return $this
      */
     public function setAddress(
-        string $firstLine = "",
-        string $buildingNameOrNumber = "",
-        string $street = "",
-        string $city = "",
-        string $stateOrCounty = "",
-        string $zipOrPostcode = "",
-        string $countryCode = ""
+        string $firstLine = '',
+        string $buildingNameOrNumber = '',
+        string $street = '',
+        string $city = '',
+        string $stateOrCounty = '',
+        string $zipOrPostcode = '',
+        string $countryCode = ''
     ): self {
         if ($firstLine) {
-            $this->body["address"] = $firstLine;
+            $this->body['address'] = $firstLine;
         }
         if ($buildingNameOrNumber) {
-            $this->body["number"] = $buildingNameOrNumber;
+            $this->body['number'] = $buildingNameOrNumber;
         }
         if ($street) {
-            $this->body["street"] = $street;
+            $this->body['street'] = $street;
         }
         if ($city) {
-            $this->body["city"] = $city;
+            $this->body['city'] = $city;
         }
         if ($stateOrCounty) {
-            $this->body["state"] = $stateOrCounty;
+            $this->body['state'] = $stateOrCounty;
         }
         if ($zipOrPostcode) {
-            $this->body["zip"] = $zipOrPostcode;
+            $this->body['zip'] = $zipOrPostcode;
         }
         if ($countryCode) {
-            $this->body["country_code"] = $countryCode;
+            $this->body['country_code'] = $countryCode;
         }
         return $this;
     }
@@ -133,30 +133,30 @@ class CreateReportRequest extends AbstractRequest
      */
     public function setLatLng(float $lat, float $lon): self
     {
-        $this->body["lat"] = $lat;
-        $this->body["lng"] = $lon;
+        $this->body['lat'] = $lat;
+        $this->body['lng'] = $lon;
         return $this;
     }
 
     /**
      * Products and services this business offers, some checks will not work without this, e.g Content keywords.
-     * @param array<string> $products - Individual products and services passed as variable arguments
+     * @param string[] $products - Individual products and services passed as variable arguments
      * @return $this
      */
     public function setProducts(array $products = []): self
     {
-        $this->body["products"] = implode(",", $products);
+        $this->body['products'] = implode(',', $products);
         return $this;
     }
 
     /**
      * Locations served, some checks will not work without this, e.g Content keywords.
-     * @param array<string> $locations - Individual locations passed as variable arguments
+     * @param string[] $locations - Individual locations passed as variable arguments
      * @return $this
      */
     public function setLocations(array $locations): self
     {
-        $this->body["locations"] = implode(",", $locations);
+        $this->body['locations'] = implode(',', $locations);
         return $this;
     }
 
@@ -178,27 +178,17 @@ class CreateReportRequest extends AbstractRequest
                 throw $exception;
 
             case 400:
-                // Request was un-processable, usually because you’ve requested analysis on a website with a path, which we can’t currently accept.
-                $exception = new ReportUnprocessableException($response["error_message"] ?? "Unprocessable request");
-                $exception->setIssue($response["issue"] ?? null);
-                if (isset($response["url"])) {
-                    $exception->setUrl($response["url"]);
-                    $exception->setUrlRecommended($response["recommendedUrl"] ?? false);
-                }
-                throw $exception;
-
             case 422:
-                // Request was un-processable, usually because the website doesn’t exist or redirects
-                $exception = new ReportUnprocessableException($response["error_message"] ?? "Unprocessable request");
-                $exception->setIssue($response["issue"] ?? null);
-                if (isset($response["url"])) {
-                    $exception->setUrl($response["url"]);
-                    $exception->setUrlRecommended($response["recommendedUrl"] ?? false);
+                // Request was un-processable, usually because you’ve requested analysis on a website with a path, which we can’t currently accept.
+                $exception = new ReportUnprocessableException($response['error_message'] ?? 'Unprocessable request');
+                $exception->setIssue($response['issue'] ?? null);
+                if (isset($response['url'])) {
+                    $exception->setUrl($response['url']);
+                    $exception->setUrlRecommended($response['recommendedUrl'] ?? false);
                 }
                 throw $exception;
         }
 
         return new CreateReportResponse($response);
     }
-
 }
