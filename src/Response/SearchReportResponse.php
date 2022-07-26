@@ -12,9 +12,10 @@ class SearchReportResponse extends AbstractResponse
     public function getReports() : array
     {
         $reports = [];
-        foreach ($this->response["reports"] as $array) {
-            $reports[] = Report::create($array);
+        foreach ($this->response['reports'] as $report) {
+            $reports[] = Report::create($report);
         }
+
         return $reports;
     }
 }

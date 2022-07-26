@@ -8,7 +8,7 @@ use Silktide\ProspectClient\Response\FetchReportResponse;
 
 class FetchReportRequest extends AbstractRequest
 {
-    protected string $path = "report";
+    protected string $path = 'report';
     protected array $queryParams = [];
 
     private string $reportId;
@@ -21,36 +21,36 @@ class FetchReportRequest extends AbstractRequest
 
     public function getPath(): string
     {
-        return $this->path . "/" . $this->reportId;
+        return "$this->path/$this->reportId";
     }
 
     public function includeDatasets(): self
     {
-        $this->queryParams["include_datasets"] = 1;
+        $this->queryParams['include_datasets'] = 1;
         return $this;
     }
 
     public function includeText(): self
     {
-        $this->queryParams["include_text"] = 1;
+        $this->queryParams['include_text'] = 1;
         return $this;
     }
 
     public function includeCategories(): self
     {
-        $this->queryParams["categories"] = 1;
+        $this->queryParams['categories'] = 1;
         return $this;
     }
 
     public function includePercentiles(): self
     {
-        $this->queryParams["percentiles"] = 1;
+        $this->queryParams['percentiles'] = 1;
         return $this;
     }
 
     public function includeAvailableVersions(): self
     {
-        $this->queryParams["available_versions"] = 1;
+        $this->queryParams['available_versions'] = 1;
         return $this;
     }
 
@@ -59,7 +59,7 @@ class FetchReportRequest extends AbstractRequest
         $httpResponse = $this->httpWrapper->execute($this);
 
         if ($httpResponse->getStatusCode() === 404) {
-            throw new ReportNotFoundException($response["error_message"] ?? "Report not found");
+            throw new ReportNotFoundException($response['error_message'] ?? 'Report not found');
         }
 
         return new FetchReportResponse($httpResponse->getResponse());

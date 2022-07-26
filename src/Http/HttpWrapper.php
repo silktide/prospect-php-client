@@ -9,9 +9,9 @@ use Silktide\ProspectClient\Request\AbstractRequest;
 
 class HttpWrapper
 {
-    protected string $scheme = "https";
-    protected string $host = "api.prospect.silktide.com";
-    protected string $pathVersion = "/api/v1/";
+    protected string $scheme = 'https';
+    protected string $host = 'api.prospect.silktide.com';
+    protected string $pathVersion = '/api/v1/';
 
     private string $apiKey;
     private ?string $locale;
@@ -49,7 +49,7 @@ class HttpWrapper
         }
     }
 
-    private function makeRequest(string $method = "get", string $path = "", array $query = [], array $body = []) : HttpResponse
+    private function makeRequest(string $method = 'get', string $path = '', array $query = [], array $body = []) : HttpResponse
     {
         $uri = (new Uri())
             ->withScheme($this->scheme)
@@ -59,13 +59,13 @@ class HttpWrapper
         $uri = (string)$uri;
 
         if ($this->locale !== null) {
-            $query = array_merge(["locale" => $this->locale], $query);
+            $query = array_merge(['locale' => $this->locale], $query);
         }
 
         $options = [
             RequestOptions::HEADERS => [
-                "api-key" => $this->apiKey,
-                "content-type" => "application/json",
+                'api-key' => $this->apiKey,
+                'content-type' => 'application/json',
             ],
             RequestOptions::QUERY => $query,
             RequestOptions::HTTP_ERRORS => false
@@ -78,7 +78,7 @@ class HttpWrapper
         return new HttpResponse(
             $this->guzzle->request(
                 strtoupper($method),
-                trim($uri, "/"),
+                trim($uri, '/'),
                 $options
             )
         );

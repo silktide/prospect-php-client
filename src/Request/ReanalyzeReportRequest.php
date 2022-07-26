@@ -8,8 +8,8 @@ use Silktide\ProspectClient\Response\ReanalyzeReportResponse;
 
 class ReanalyzeReportRequest extends AbstractRequest
 {
-    protected string $method = "POST";
-    protected string $path = "report";
+    protected string $method = 'POST';
+    protected string $path = 'report';
 
     private string $reportId;
 
@@ -21,14 +21,15 @@ class ReanalyzeReportRequest extends AbstractRequest
 
     public function getPath(): string
     {
-        return $this->path . "/" . $this->reportId;
+        return "$this->path/$this->reportId";
     }
 
     public function setCustomField(string $key, string $value): self
     {
-        if ($key[0] !== "_") {
-            $key = "_" . $key;
+        if ($key[0] !== '_') {
+            $key = "_$key";
         }
+
         $this->body[$key] = $value;
         return $this;
     }
@@ -40,7 +41,7 @@ class ReanalyzeReportRequest extends AbstractRequest
      */
     public function setCompletionWebhook(string $url): self
     {
-        $this->body["on_completion"] = $url;
+        $this->body['on_completion'] = $url;
         return $this;
     }
 
@@ -50,7 +51,7 @@ class ReanalyzeReportRequest extends AbstractRequest
         $response = $httpResponse->getResponse();
 
         if ($httpResponse->getStatusCode() === 404) {
-            throw new ReportNotFoundException($response["error_message"] ?? "Report not found");
+            throw new ReportNotFoundException($response['error_message'] ?? 'Report not found');
         }
 
         return new ReanalyzeReportResponse($httpResponse->getResponse());

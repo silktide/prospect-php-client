@@ -15,22 +15,22 @@ class Report
 
     public function getReportId(): string
     {
-        return $this->data["report_id"];
+        return $this->data['report_id'];
     }
 
     public function getAccountId(): string
     {
-        return $this->data["account_id"];
+        return $this->data['account_id'];
     }
 
     public function getDomain(): string
     {
-        return $this->data["domain"];
+        return $this->data['domain'];
     }
 
     public function getOverallScore(): int
     {
-        return $this->data["overall_score"];
+        return $this->data['overall_score'];
     }
 
     /**
@@ -48,10 +48,10 @@ class Report
 
     public function getAllReportSections(): array
     {
-        $skipKeys = ["meta"];
+        $skipKeys = ['meta'];
         $sections = $this->data;
 
-        return array_filter($sections, function($value, $key)use($skipKeys) {
+        return array_filter($sections, function($value, $key) use ($skipKeys) {
             if (in_array($key, $skipKeys) || !is_array($value)) {
                 return false;
             }
@@ -62,7 +62,7 @@ class Report
 
     public function getMetaValue(string $key): ?string
     {
-        return $this->data["meta"][$key] ?? null;
+        return $this->data['meta'][$key] ?? null;
     }
 
     /**

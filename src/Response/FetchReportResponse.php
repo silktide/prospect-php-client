@@ -24,8 +24,8 @@ class FetchReportResponse extends AbstractResponse
     public function getCategories(): array
     {
         $categories = [];
-        foreach($this->response["report"]["categories"] ?? [] as $row) {
-            $categories[$row["label"]] = ReportCategory::create($row["label"], $row["score"], $row["sections"]);
+        foreach($this->response['report']['categories'] ?? [] as $row) {
+            $categories[$row['label']] = ReportCategory::create($row['label'], $row['score'], $row['sections']);
         }
 
         return $categories;
@@ -37,22 +37,22 @@ class FetchReportResponse extends AbstractResponse
     public function getPercentiles(): array
     {
         $percentiles = [];
-        foreach ($this->response["percentiles"] ?? [] as $row) {
+        foreach ($this->response['percentiles'] ?? [] as $row) {
             $percentiles[] = ReportPercentile::create(
-                $row["type"],
-                $row["industry"],
-                $row["area"],
-                $row["country"],
-                $row["average"],
-                $row["count"],
-                $row["percentile"]
+                $row['type'],
+                $row['industry'],
+                $row['area'],
+                $row['country'],
+                $row['average'],
+                $row['count'],
+                $row['percentile']
             );
         }
         return $percentiles;
     }
 
-    public function getVersions() : array
+    public function getVersions(): array
     {
-        return $this->response["versions"] ?? [];
+        return $this->response['versions'] ?? [];
     }
 }

@@ -16,14 +16,14 @@ class HttpResponse
 
         $response = json_decode($httpResponse->getBody()->getContents(), true);
         if (json_last_error() !== JSON_ERROR_NONE || !is_array($response)) {
-            throw new InvalidServerResponseException("Prospect server error: invalid response");
+            throw new InvalidServerResponseException('Prospect server error: invalid response');
         }
 
         if ($this->httpResponse->getStatusCode() === 500) {
-            $message = "Prospect server error";
+            $message = 'Prospect server error';
 
-            if (isset($response["error_message"])) {
-                $message .= ": " . $response["error_message"];
+            if (isset($response['error_message'])) {
+                $message .= ': ' . $response['error_message'];
             }
 
             throw new InvalidServerResponseException($message);
