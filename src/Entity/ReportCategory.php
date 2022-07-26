@@ -8,10 +8,6 @@ class ReportCategory
     private float $score;
     private array $sections;
 
-    private function __construct()
-    {
-    }
-
     public static function create(string $label, float $score, array $sections) : ReportCategory
     {
         $reportCategory = new ReportCategory();

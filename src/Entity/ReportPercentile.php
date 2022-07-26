@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Silktide\ProspectClient\Entity;
-
 
 class ReportPercentile
 {
@@ -13,10 +11,6 @@ class ReportPercentile
     private float $average;
     private int $count;
     private int $percentile;
-
-    private function __construct()
-    {
-    }
 
     public function getType(): string
     {

@@ -2,13 +2,10 @@
 
 namespace Silktide\ProspectClient\Response;
 
-use Psr\Http\Message\ResponseInterface;
-use function GuzzleHttp\json_decode;
-
 abstract class AbstractResponse
 {
     /**
-     * @var array<mixed>
+     * @var array
      */
     protected array $response = [];
 

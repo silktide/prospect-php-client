@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Silktide\ProspectClient\Http;
-
 
 use Psr\Http\Message\ResponseInterface;
 use Silktide\ProspectClient\Exception\Api\InvalidServerResponseException;
@@ -23,21 +21,23 @@ class HttpResponse
 
         if ($this->httpResponse->getStatusCode() === 500) {
             $message = "Prospect server error";
+
             if (isset($response["error_message"])) {
                 $message .= ": " . $response["error_message"];
             }
+
             throw new InvalidServerResponseException($message);
         }
 
         $this->response = $response;
     }
 
-    public function getStatusCode() : int
+    public function getStatusCode(): int
     {
         return $this->httpResponse->getStatusCode();
     }
 
-    public function getResponse() : array
+    public function getResponse(): array
     {
         return $this->response;
     }

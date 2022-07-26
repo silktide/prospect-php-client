@@ -1,8 +1,7 @@
 <?php
+
 namespace Silktide\ProspectClient\Request;
 
-use GuzzleHttp\Psr7\Response;
-use Psr\Http\Message\ResponseInterface;
 use Silktide\ProspectClient\Http\HttpWrapper;
 use Silktide\ProspectClient\Response\AbstractResponse;
 

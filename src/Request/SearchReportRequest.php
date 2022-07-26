@@ -4,7 +4,6 @@ namespace Silktide\ProspectClient\Request;
 
 use Silktide\ProspectClient\Exception\Api\InvalidRequestException;
 use Silktide\ProspectClient\Response\SearchReportResponse;
-use function GuzzleHttp\json_encode;
 
 class SearchReportRequest extends AbstractRequest
 {

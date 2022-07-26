@@ -200,5 +200,4 @@ class CreateReportRequest extends AbstractRequest
 
         return new CreateReportResponse($response);
     }
-
 }

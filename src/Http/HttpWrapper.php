@@ -1,4 +1,5 @@
 <?php
+
 namespace Silktide\ProspectClient\Http;
 
 use GuzzleHttp\Client as GuzzleClient;
@@ -70,7 +71,7 @@ class HttpWrapper
             RequestOptions::HTTP_ERRORS => false
         ];
 
-        if (count($body) > 0) {
+        if (!empty($body)) {
             $options[RequestOptions::BODY] = json_encode($body);
         }
 

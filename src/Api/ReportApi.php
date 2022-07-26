@@ -6,7 +6,6 @@ use Silktide\ProspectClient\Request\CreateReportRequest;
 use Silktide\ProspectClient\Request\FetchReportRequest;
 use Silktide\ProspectClient\Request\ReanalyzeReportRequest;
 use Silktide\ProspectClient\Request\SearchReportRequest;
-use Silktide\ProspectClient\Entity\Report;
 use Silktide\ProspectClient\Http\HttpWrapper;
 
 class ReportApi
