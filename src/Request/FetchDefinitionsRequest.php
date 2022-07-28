@@ -2,7 +2,7 @@
 
 namespace Silktide\ProspectClient\Request;
 
-use Silktide\ProspectClient\Exception\Api\ReportNotFoundException;
+use Silktide\ProspectClient\Exception\Api\DefinitionsNotFoundException;
 use Silktide\ProspectClient\Response\FetchDefinitionsResponse;
 
 class FetchDefinitionsRequest extends AbstractRequest
@@ -20,7 +20,7 @@ class FetchDefinitionsRequest extends AbstractRequest
         $httpResponse = $this->httpWrapper->execute($this);
 
         if ($httpResponse->getStatusCode() === 404) {
-            throw new ReportNotFoundException($response['error_message'] ?? 'Endpoint not found');
+            throw new DefinitionsNotFoundException($response['error_message'] ?? 'Endpoint not found');
         }
 
         return new FetchDefinitionsResponse($httpResponse->getResponse());
