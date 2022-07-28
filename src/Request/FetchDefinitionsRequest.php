@@ -18,11 +18,12 @@ class FetchDefinitionsRequest extends AbstractRequest
     public function execute(): FetchDefinitionsResponse
     {
         $httpResponse = $this->httpWrapper->execute($this);
+        $response = $httpResponse->getResponse();
 
         if ($httpResponse->getStatusCode() === 404) {
             throw new DefinitionsNotFoundException($response['error_message'] ?? 'Definitions not found');
         }
 
-        return new FetchDefinitionsResponse($httpResponse->getResponse());
+        return new FetchDefinitionsResponse($response);
     }
 }
