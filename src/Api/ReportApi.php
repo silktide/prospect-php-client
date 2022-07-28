@@ -3,6 +3,7 @@
 namespace Silktide\ProspectClient\Api;
 
 use Silktide\ProspectClient\Request\CreateReportRequest;
+use Silktide\ProspectClient\Request\FetchDefinitionsRequest;
 use Silktide\ProspectClient\Request\FetchReportRequest;
 use Silktide\ProspectClient\Request\ReanalyzeReportRequest;
 use Silktide\ProspectClient\Request\SearchReportRequest;
@@ -25,6 +26,11 @@ class ReportApi
     public function fetch(string $reportId): FetchReportRequest
     {
         return new FetchReportRequest($this->httpWrapper, $reportId);
+    }
+
+    public function fetchDefinitions(): FetchDefinitionsRequest
+    {
+        return new FetchDefinitionsRequest($this->httpWrapper);
     }
 
     public function reanalyze(string $reportId): ReanalyzeReportRequest
