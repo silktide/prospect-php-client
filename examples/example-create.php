@@ -4,7 +4,6 @@ require __DIR__ . "/../vendor/autoload.php";
 
 use Symfony\Component\Dotenv\Dotenv;
 use Silktide\ProspectClient\ProspectClient;
-use Silktide\ProspectClient\Request\SearchReportRequest;
 
 $envFile = __DIR__ . "/../.env";
 if (file_exists($envFile)) {
