@@ -17,11 +17,12 @@ class HttpWrapper
     private ?string $locale;
     private GuzzleClient $guzzle;
 
-    public function __construct(string $apiKey, ?string $locale, GuzzleClient $guzzle = null)
+    public function __construct(string $apiKey, ?string $locale, GuzzleClient $guzzle = null, string $host = null)
     {
         $this->apiKey = $apiKey;
         $this->locale = $locale;
         $this->guzzle = $guzzle ?? new GuzzleClient();
+        $this->host = $host ?? $this->host;
     }
 
     public function execute(AbstractRequest $request) : HttpResponse
