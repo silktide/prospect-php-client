@@ -6,7 +6,6 @@ use Silktide\ProspectClient\Request\CreateReportRequest;
 use Silktide\ProspectClient\Request\FetchReportRequest;
 use Silktide\ProspectClient\Request\ReanalyzeReportRequest;
 use Silktide\ProspectClient\Request\ReportSettingsRequest;
-use Silktide\ProspectClient\Request\ReportSpellingsRequest;
 use Silktide\ProspectClient\Request\SearchReportRequest;
 use Silktide\ProspectClient\Http\HttpWrapper;
 
@@ -42,10 +41,5 @@ class ReportApi
     public function settings(string $reportId)
     {
         return new ReportSettingsRequest($this->httpWrapper, $reportId);
-    }
-
-    public function spellings(string $reportId)
-    {
-        return new ReportSpellingsRequest($this->httpWrapper, $reportId);
     }
 }
