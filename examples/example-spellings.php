@@ -19,4 +19,24 @@ $reportApi = $prospectClient->getReportApi();
 
 $reportId = "e69ef2c48be24356a27ff77f5d6bf5ce1678e239";
 
-// Do the example
+$addWordResponse = $reportApi->spellings($reportId)
+    ->addWord('mistake')
+    ->execute();
+
+if (!$addWordResponse->getSuccess()) {
+    echo "Failed to add word \n";
+    return;
+}
+
+echo "Successfully added word \n";
+
+$deleteWordResponse = $reportApi->spellings($reportId)
+    ->deleteWord($addWordResponse->getWord()['id'])
+    ->execute();
+
+if (!$deleteWordResponse->getSuccess()) {
+    echo "Failed to delete word \n";
+    return;
+}
+
+echo "Successfully deleted word \n";
