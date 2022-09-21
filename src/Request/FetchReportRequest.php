@@ -30,6 +30,12 @@ class FetchReportRequest extends AbstractRequest
         return $this;
     }
 
+    public function includeExpandedDatasetContent(): self
+    {
+        $this->queryParams['expanded_dataset_content'] = 1;
+        return $this;
+    }
+
     public function includeText(): self
     {
         $this->queryParams['include_text'] = 1;
