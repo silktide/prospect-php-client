@@ -35,6 +35,7 @@ class ReportSpellingsRequest extends AbstractRequest
         $this->method = 'DELETE';
 
         $this->body['id'] = $id;
+        $this->body['level'] = 'report';
 
         return $this;
     }
