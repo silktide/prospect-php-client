@@ -1,4 +1,8 @@
-Prospect PHP Client
+# Deprecated
+
+This has been moved to the Insites organisation and can now be found [here](https://github.com/insites/php-api-client)
+
+~Prospect PHP Client~
 =======================================================
 
 Example usage
